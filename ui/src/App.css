@@ -1,0 +1,13 @@
+.app-root {
+  height: 100vh;
+}
+
+.app-header-root {
+  height: 6vh;
+  position: sticky;
+  background: #000000;
+}
+
+.app-content-root {
+  height: 94vh;
+}
