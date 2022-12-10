@@ -15,7 +15,7 @@ def bg_music_basic_model():
 
 
 def add_album_cover(mp3):
-    # use chatgpt3 for prompt gen maybe
+    # use gpt3 for prompt gen maybe
     album_cover = album_cover_basic_model(prompt)
     audiofile = eyed3.load(mp3)
     if (audiofile.tag == None):
