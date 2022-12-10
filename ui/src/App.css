@@ -11,3 +11,45 @@
 .app-content-root {
   height: 94vh;
 }
+
+.dashboard-index-root {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-index-box-root {
+  width: 20%;
+  display: flex;
+  cursor: pointer;
+  margin-right: 2%;
+  align-items: center;
+  flex-direction: column;
+}
+
+.dashboard-index-box-image {
+  margin-bottom: 40px;
+}
+
+.dashboard-index-box-content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.dashboard-index-box-content-text {
+  padding: 0px;
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 1.3em;
+  margin-bottom: 10px;
+}
+
+.dashboard-index-box-content-description {
+  width: 75%;
+  padding: 0px;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+}
