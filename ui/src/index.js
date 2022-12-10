@@ -2,12 +2,26 @@ import "./index.css";
 import App from "./App";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from 'react-toastify';
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <App />
+    <ToastContainer
+      rtl={false}
+      closeOnClick
+      pauseOnHover
+      theme="dark"
+      autoClose={5000}
+      pauseOnFocusLoss
+      draggable={false}
+      newestOnTop={false}
+      position="bottom-left"
+      hideProgressBar={false}
+    />
   </React.StrictMode>
 );
 

@@ -1,5 +1,10 @@
 import "./App.css";
-import { Route, Routes, Navigate, BrowserRouter as Router } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  Navigate,
+  BrowserRouter as Router,
+} from "react-router-dom";
 
 import AppHeader from "./components/AppHeader";
 // Page / route import
@@ -11,11 +16,11 @@ import ComposeBgMusicIndex from "./pages/ComposeBgMusicIndex";
 function App() {
   return (
     <div className="app-root">
-      <div className="app-header-root">
-        <AppHeader />
-      </div>
-      <div className="app-content-root">
-        <Router>
+      <Router>
+        <div className="app-header-root">
+          <AppHeader />
+        </div>
+        <div className="app-content-root">
           <Routes>
             <Route exact path="/" element={<DashboardIndex />} />
             <Route path="/compose-lyric" element={<ComposeLyricIndex />} />
@@ -23,8 +28,8 @@ function App() {
             <Route path="/compose-bgmusic" element={<ComposeBgMusicIndex />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
-        </Router>
-      </div>
+        </div>
+      </Router>
     </div>
   );
 }
