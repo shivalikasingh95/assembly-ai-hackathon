@@ -3,3 +3,4 @@ replicate
 openai
 fastapi
 uvicorn
+yaml

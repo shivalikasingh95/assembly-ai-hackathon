@@ -1,4 +1,4 @@
 *.xml
 *.iml
 .env
-*.pycache
+__pycache__/

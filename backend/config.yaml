@@ -2,12 +2,35 @@ add_album_cover_flag: True
 
 lyric_generation:
   ## genre of music to select from for generation of lyrics
-  genre: {
-    " ": [],
-    "Pop": ["Dua Lipa", "Shawn Mendes", "Harry Styles", "Ed Sheeran", "Taylor Swift", "Katy Perry"],
-    "Rock": ["Queens", "Beatles", "Avril Lavigne", "Imagine dragons", "Metallica", "Pink Floyd"],
-    "Rap": ["Eminem", "Tupac Shakur", "Drake", "B.I.G"],
-    "Metal": ["Black Sabbath", "Slipknot", "Korn", "System of a down"]
+  "Default": {
+    artists: ["Shawn Mendes", "Harry Styles", "Ed Sheeran", "Taylor Swift", "Katy Perry", "Beatles", "Avril Lavigne","Black Sabbath", "Slipknot", "Imagine dragons", "Pink Floyd", "Eminem", "Tupac Shakur", ],
+    temperature: 0.7,
+    frequency_penalty: 0.5,
+    max_tokens: 256
+  }
+  "Pop": {
+    artists: ["Dua Lipa", "Shawn Mendes", "Harry Styles", "Ed Sheeran", "Taylor Swift", "Katy Perry"],
+    temperature: 0.7,
+    frequency_penalty: 0.7,
+    max_tokens: 256
+  }
+  "Rock": {
+    artists: ["Queens", "Beatles", "Avril Lavigne", "Imagine dragons", "Metallica", "Pink Floyd"],
+    temperature: 0.6,
+    frequency_penalty: 0.4,
+    max_tokens: 256
+  }
+  "Rap": {
+    artists:["Eminem", "Tupac Shakur", "Drake", "B.I.G"],
+    temperature: 0.8,
+    frequency_penalty: 0.6,
+    max_tokens: 256
+  }
+  "Metal": {
+    artists:["Black Sabbath", "Slipknot", "Korn", "System of a down"],
+    temperature: 0.9,
+    frequency_penalty: 0.2,
+    max_tokens: 256
   }
 
   ## GPT3 model variant to use
