@@ -47,8 +47,10 @@ lyric_generation:
   frequency_penalty: 0.3
 
 album_cover_art:
-  model_name: "prompthero/openjourney"
-  model_version: "9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb"
+  replicate_model_name: "prompthero/openjourney"
+  replicate_model_version: "9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb"
+  hf_dreambooth_model_name: "shivi/sd-album-covers" #"shivi/sd-division-bell"
+  num_samples_for_hf_model: 1
 
 bg_music:
   max_pos_len: 4096

@@ -7,3 +7,6 @@ yaml
 python-multipart
 midi2audio
 boto3
+git+https://github.com/huggingface/diffusers.git
+accelerate
+transformers

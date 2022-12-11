@@ -57,8 +57,14 @@ def album_cover_input(text_prompt: str):
     """
     print(text_prompt)
     print(REPLICATE_API_TOKEN)
+    
     album_art_config = config["album_cover_art"]
-    response = generate_album_cover_art(album_art_config, text_prompt)
+    if fine_tuned_album_model:
+        response = generate_album_art_using_dreambooth(album_art_config, text_prompt)
+    else:
+        ## call replicate model
+        response = generate_album_cover_art(album_art_config, text_prompt)
+
     return JSONResponse(response, status_code=201)
 
 @app.post("/bg_music")
