@@ -227,6 +227,11 @@
   flex-direction: column;
 }
 
+.compose-bgmusic-radioContainer {
+  display: flex;
+  margin-bottom: 1%;
+}
+
 .compose-bgmusic-inputContainer {
   display: flex;
   margin-bottom: 2%;
