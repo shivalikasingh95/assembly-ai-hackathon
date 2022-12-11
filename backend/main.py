@@ -6,6 +6,7 @@ from app.lyric_generation import generate_song_lyrics
 from app.bg_music import generate_background_music, generate_music
 import yaml
 import uvicorn
+import boto3
 
 ## Load API KEY TOKENS
 REPLICATE_API_TOKEN = os.environ.get("REPLICATE_API_TOKEN")
