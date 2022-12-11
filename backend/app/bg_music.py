@@ -2,6 +2,7 @@ from .album_cover import generate_album_cover_art
 import eyed3
 from eyed3.id3.frames import ImageFrame
 import sys
+import os
 sys.path.append("..ml/")
 from wandb_load_model import get_music_gen_model
 from SymphonyNet.src.fairseq.gen_utils import (
@@ -102,6 +103,10 @@ def generate_music(config: dict, midi_file_path: str):
     ## upload mp3 file to s3
     upload_file_to_s3(mp3_file_path, config['s3_bucket_name'])
 
+    if config["delete_audio_files"]:
+        ## delete local audio files
+        delete_local_audio_files(midi_output_name, mp3_output_name)
+
     return {"output_bg_music": mp3_output_name}
 
 
@@ -130,3 +135,14 @@ def upload_file_to_s3(mp3_file_path:str, s3_bucket_name: str):
         Filename=mp3_file_path,
         Bucket=s3_bucket_name,
     )
+
+def delete_local_audio_files(midi_file_path: str, mp3_file_path: str)
+    """
+    This function helps to delete midi & mp3 files generated locally after upload to s3
+    Args:
+        midi_file_path (str): path of midi file that needs to be deleted
+        mp3_file_path (str): path of mp3 file that needs to be deleted
+    """
+
+    os.remove(midi_file_path)
+    os.remove(mp3_file_path)

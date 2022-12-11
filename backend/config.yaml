@@ -63,3 +63,4 @@ bg_music:
   wandb_project_name: "SymphonyNet"
   sampling_rate: 16000
   s3_bucket_name: "assemblyai-hackathon"
+  delete_audio_files: False
