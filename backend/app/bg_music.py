@@ -54,16 +54,17 @@ def generate_music(config: dict, midi_file_path: str):
     BPE = config["bpe"]
     DATA_BIN=f"linear_{MAX_POS_LEN}_chord{BPE}_hardloss{IGNORE_META_LOSS}"
     CHECKPOINT_SUFFIX=f"{DATA_BIN}_PI{PI_LEVEL}"
-    DATA_BIN_DIR=f"..ml/SymphonyNet/data/model_spec/{DATA_BIN}/bin/"
-    DATA_VOC_DIR=f"..ml/SymphonyNet/data/model_spec/{DATA_BIN}/vocabs/"
+    DATA_BIN_DIR=f"../ml/SymphonyNet/data/model_spec/{DATA_BIN}/bin/"
+    DATA_VOC_DIR=f"../ml/SymphonyNet/data/model_spec/{DATA_BIN}/vocabs/"
 
     
-    music_dict.load_vocabs_bpe(DATA_VOC_DIR, '..ml/SymphonyNet/data/bpe_res/' if BPE == '_bpe' else None)
+    music_dict.load_vocabs_bpe(DATA_VOC_DIR, '../ml/SymphonyNet/data/bpe_res/' if BPE == '_bpe' else None)
     
     ## download model checkpoint from Weights & Biases model registry
     model_path = get_music_gen_model(config['wandb_project_name'])
 
     ## Load SymphonyNet model using checkpoint file path
+    print(model_path,DATA_BIN_DIR)
     custom_lm = FairseqLanguageModel.from_pretrained('.', 
         checkpoint_file=model_path, 
         data_name_or_path=DATA_BIN_DIR, 
@@ -101,7 +102,7 @@ def generate_music(config: dict, midi_file_path: str):
     convert_midi_to_mp3(midi_output_name, mp3_output_name)
 
     ## upload mp3 file to s3
-    upload_file_to_s3(mp3_file_path, config['s3_bucket_name'])
+    # upload_file_to_s3(mp3_output_name, config['s3_bucket_name'])
 
     if config["delete_audio_files"]:
         ## delete local audio files

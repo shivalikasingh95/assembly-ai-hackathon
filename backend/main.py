@@ -4,11 +4,12 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from app.album_cover import generate_album_cover_art
 from app.lyric_generation import generate_song_lyrics
-from app.bg_music import generate_background_music
+from app.bg_music import generate_music
 import yaml
 import uvicorn
 from pydantic import BaseModel
 from typing import Optional
+import boto3
 
 class album_input(BaseModel):
     text_prompt: str
@@ -33,7 +34,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:3001"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -94,13 +95,32 @@ def bg_music(data: bgm_input):
     #         mp3_file = "mp3"
     #     except:
     #         mp3_file = None
-    midi_file_name = download_file_from_s3(s3_bucket_name, data.text_prompt)
-
-    
     bg_music_config = config["bg_music"]
+    midi_file_name = download_file_from_s3(bg_music_config["s3_bucket_name"], data.url)
     response = generate_music(bg_music_config, midi_file_name)
     return JSONResponse(response, status_code=201)
 
+@app.post("/api/v1/bg_music_file_input")
+def bg_music(file: UploadFile = File(...)):
+    #url: str = None, mp3_file: UploadFile = File(...)):
+    """
+    Route for generating album/song cover art based on user prompt
+    Args:
+        text_prompt (str): Input text prompt by user which will be fed to model for generating album/song art
+    Returns:
+        response (str): Model response containing generated image link
+    """
+    # if data.text_prompt is not None:
+    #     #download file
+    #     try:
+    #         mp3_file = "mp3"
+    #     except:
+    #         mp3_file = None
+    print("recieved")
+    bg_music_config = config["bg_music"]
+#     midi_file_name = download_file_from_s3(bg_music_config["s3_bucket_name"], data.url)
+    response = generate_music(bg_music_config, "/home/ubuntu/AssemblyAI/assembly-ai-hackathon/backend/app/input_audio/test.mid")
+    return JSONResponse(response, status_code=201)
 
 
 def download_file_from_s3(s3_bucket_name, midi_file_name):
@@ -111,6 +131,8 @@ def download_file_from_s3(s3_bucket_name, midi_file_name):
         Filename=midi_file_name
     )
     return midi_file_name
+    
+     
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8001, reload=True)

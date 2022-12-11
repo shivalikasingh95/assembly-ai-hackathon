@@ -43,11 +43,29 @@ export const postAlbumCover = (params) => {
 };
 
 export const postBgMusic = (params) => {
-  const data = {
-    text_prompt: params?.input
-  };
+  let data;
+  let config;
+  if (params?.type === "s3") {
+    data = {
+      url: params?.input
+    };
+    config = {
+      headers: {
+        'content-type': 'application/json',
+      },
+    };
+  } else {
+    data = new FormData();
+    data.append('file', params?.input);
+    data.append('fileName', params?.input?.name);
+    config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    };
+  }
   return axios
-    .post(`${API_ROOT}bg_music`, data)
+    .post(`${API_ROOT}${params?.type === "s3" ? "bg_music" : "bg_music_file_input"}`, data, config)
     .then((res) => {
       if (res?.status === 201) {
         toast.success(MESSAGE.SUC_POST_BG_MUSIC, { theme: "dark" });
