@@ -60,6 +60,7 @@
   text-align: center;
 }
 
+/*Compose lyric css*/
 .compose-lyric-root {
   height: 100%;
 }
@@ -73,7 +74,7 @@
 }
 
 .compose-lyric-input {
-  height: 43%;
+  height: 28%;
   display: flex;
   margin-bottom: 2%;
   flex-direction: column;
@@ -89,7 +90,7 @@
 }
 
 .compose-lyric-output {
-  height: 43%;
+  height: 58%;
   display: flex;
   margin-bottom: 2%;
   flex-direction: column;
@@ -122,7 +123,13 @@
   justify-content: end;
 }
 
-.compose-lyric-textarea {
+.compose-lyric-textarea-input {
+  width: 50%;
+  resize: none;
+  height: 100%;
+}
+
+.compose-lyric-textarea-output {
   width: 100%;
   resize: none;
   height: 100%;
@@ -153,6 +160,61 @@
  justify-content: center;
 }
 
+/*Compose album css*/
+.compose-album-input {
+  height: 28%;
+  display: flex;
+  margin-bottom: 2%;
+  flex-direction: column;
+}
+
+.compose-album-input-heading {
+  height: 5%;
+  margin-bottom: 1%;
+}
+
+.compose-album-input-box {
+  height: 94%;
+}
+
+.compose-album-textarea {
+  width: 50%;
+  resize: none;
+  height: 100%;
+}
+
+.compose-album-output {
+  height: 58%;
+  display: flex;
+  margin-bottom: 2%;
+  flex-direction: column;
+}
+
+.compose-album-output-heading {
+  height: 5%;
+  margin-bottom: 1%;
+}
+
+.compose-album-output-box {
+  height: 94%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.compose-album-output-box-col {
+  width: 20%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.compose-album-output-box-col-select {
+  width: 20%;
+  height: 100%;
+  cursor: pointer;
+  border: 1px solid black;
+}
+
+/*Compose bgmusic css*/
 .compose-bgmusic-root {
   height: 100%;
 }
@@ -167,14 +229,14 @@
 
 .compose-bgmusic-inputContainer {
   display: flex;
-  flex-direction: column;
   margin-bottom: 2%;
+  flex-direction: column;
 }
 
 .compose-bgmusic-outputContainer {
   display: flex;
-  flex-direction: column;
   margin-bottom: 2%;
+  flex-direction: column;
 }
 
 .compose-bgmusic-heading {
