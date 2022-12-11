@@ -15,7 +15,7 @@ const Header = () => {
         onClick={() => navigate("/")}
       />
       <div style={{ cursor: "pointer" }} onClick={() => navigate("/")}>
-        Music Generation System
+        Chords & Art
       </div>
     </>
   );
