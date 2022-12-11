@@ -8,7 +8,8 @@ const ComposeAlbumIndex = () => {
   const [loading, setLoading] = useState(false);
   const [albumInfo, setAlbumInfo] = useState({
     input: "",
-    output: "",
+    output: [],
+    download: "",
     errorMessage: "",
   });
 
@@ -43,7 +44,40 @@ const ComposeAlbumIndex = () => {
     }
   };
 
-  const handleDownloadAlbum = async () => {};
+  const handleDownloadClick = (data) => {
+    setAlbumInfo({
+      ...albumInfo,
+      download: data,
+    });
+  };
+
+  const handleDownloadAlbum = async () => {
+    if (albumInfo?.download) {
+      albumInfo?.errorMessage !== "" &&
+        setAlbumInfo({
+          ...albumInfo,
+          errorMessage: "",
+        });
+      const image = await fetch(albumInfo?.download);
+      // Split image name
+      const nameSplit = albumInfo?.download.split("/");
+      const duplicateName = nameSplit.pop();
+      // Download image
+      const imageBlog = await image.blob();
+      const imageURL = URL.createObjectURL(imageBlog);
+      const link = document.createElement("a");
+      link.href = imageURL;
+      link.download = "" + duplicateName + "";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      setAlbumInfo({
+        ...albumInfo,
+        errorMessage: "Please select an image to download !!!",
+      });
+    }
+  };
 
   return (
     <div className="compose-lyric-root">
@@ -62,34 +96,41 @@ const ComposeAlbumIndex = () => {
           </div>
         ) : (
           <>
-            <div className="compose-lyric-input">
-              <div className="compose-lyric-input-heading">
+            <div className="compose-album-input">
+              <div className="compose-album-input-heading">
                 Album Cover Prompt*
               </div>
-              <div className="compose-lyric-input-box">
+              <div className="compose-album-input-box">
                 <textarea
                   value={albumInfo?.input}
-                  className="compose-lyric-textarea"
+                  className="compose-album-textarea"
                   onChange={(e) =>
                     handleChangeAlbumInfo("input", e.target.value)
                   }
                 />
               </div>
             </div>
-            <div className="compose-lyric-output">
-              <div className="compose-lyric-output-heading">
+            <div className="compose-album-output">
+              <div className="compose-album-output-heading">
                 Album Cover Output
               </div>
-              <div className="compose-lyric-output-box">
-                {albumInfo?.output ? (
-                  <textarea
-                    disabled={true}
-                    value={albumInfo?.output}
-                    className="compose-lyric-textarea"
-                  />
-                ) : (
-                  <img src={albumInfo?.output} />
-                )}
+              <div className="compose-album-output-box">
+                {albumInfo?.output?.length > 0 &&
+                  albumInfo.output.map((album, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className={
+                          albumInfo?.download === album
+                            ? "compose-album-output-box-col-select"
+                            : "compose-album-output-box-col"
+                        }
+                        onClick={() => handleDownloadClick(album)}
+                      >
+                        <img src={album} width="100%" height="100%" />
+                      </div>
+                    );
+                  })}
               </div>
             </div>
             <div className="compose-lyric-footer">
@@ -97,7 +138,7 @@ const ComposeAlbumIndex = () => {
                 {albumInfo?.errorMessage}
               </div>
               <div className="compose-lyric-footer-button-container">
-                {albumInfo?.output ? (
+                {albumInfo?.output?.length > 0 ? (
                   <div
                     className="compose-lyric-button"
                     onClick={() => handleDownloadAlbum()}
