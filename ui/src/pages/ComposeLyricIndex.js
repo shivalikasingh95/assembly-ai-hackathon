@@ -43,7 +43,16 @@ const ComposeLyricIndex = () => {
     }
   };
 
-  const handleDownloadLyric = async () => {};
+  const handleDownloadLyric = async () => {
+    const element = document.createElement("a");
+    const file = new Blob([lyricsInfo?.output], {
+      type: "text/plain;charset=utf-8",
+    });
+    element.href = URL.createObjectURL(file);
+    element.download = "output-lyric.txt";
+    document.body.appendChild(element);
+    element.click();
+  };
 
   return (
     <div className="compose-lyric-root">
@@ -67,7 +76,7 @@ const ComposeLyricIndex = () => {
               <div className="compose-lyric-input-box">
                 <textarea
                   value={lyricsInfo?.input}
-                  className="compose-lyric-textarea"
+                  className="compose-lyric-textarea-input"
                   onChange={(e) =>
                     handleChangeLyricInfo("input", e.target.value)
                   }
@@ -80,7 +89,7 @@ const ComposeLyricIndex = () => {
                 <textarea
                   disabled={true}
                   value={lyricsInfo?.output}
-                  className="compose-lyric-textarea"
+                  className="compose-lyric-textarea-output"
                 />
               </div>
             </div>

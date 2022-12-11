@@ -35,7 +35,7 @@ const ComposeBgMusicIndex = () => {
       if (data) {
         setBgMusicInfo({
           ...bgMusicInfo,
-          output: data?.output_album,
+          output: data?.output_bgmusic,
         });
       }
       setLoading(false);
@@ -47,7 +47,25 @@ const ComposeBgMusicIndex = () => {
     }
   };
 
-  const handleDownloadBgMusic = async () => {};
+  const handleDownloadBgMusic = async () => {
+    // Split mp3 name
+    const nameSplit = bgMusicInfo?.output.split("/");
+    const duplicateName = nameSplit.pop();
+    let blob = new Blob([bgMusicInfo?.output]);
+    //downloading the file depends on the browser
+    //IE handles it differently than chrome/webkit
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, duplicateName);
+    } else {
+      let objectUrl = URL.createObjectURL(blob);
+      let link = document.createElement("a");
+      link.href = objectUrl;
+      link.setAttribute("download", duplicateName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
 
   console.log("bgMusicInfo", bgMusicInfo);
 
