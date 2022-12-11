@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { FadeLoader } from "react-spinners";
 
 import { postAlbumCover } from "../api/api";
+import { override } from "../api/apiLoading";
 
 const ComposeAlbumIndex = () => {
   const [loading, setLoading] = useState(false);
@@ -46,52 +48,74 @@ const ComposeAlbumIndex = () => {
   return (
     <div className="compose-lyric-root">
       <div className="compose-lyric-root-inner">
-        <div className="compose-lyric-input">
-          <div className="compose-lyric-input-heading">Album Cover Prompt*</div>
-          <div className="compose-lyric-input-box">
-            <textarea
-              value={albumInfo?.input}
-              className="compose-lyric-textarea"
-              onChange={(e) => handleChangeAlbumInfo("input", e.target.value)}
+        {loading ? (
+          <div className="compose-lyric-root-loading">
+            <FadeLoader
+              width={5}
+              radius={2}
+              margin={2}
+              height={15}
+              css={override}
+              color={"#4279f4"}
+              loading={loading}
             />
           </div>
-        </div>
-        <div className="compose-lyric-output">
-          <div className="compose-lyric-output-heading">Album Cover Output</div>
-          <div className="compose-lyric-output-box">
-            {albumInfo?.output ? (
-              <textarea
-                disabled={true}
-                value={albumInfo?.output}
-                className="compose-lyric-textarea"
-              />
-            ) : (
-              <img src={albumInfo?.output} />
-            )}
-          </div>
-        </div>
-        <div className="compose-lyric-footer">
-          <div className="compose-lyric-footer-error-container">
-            {albumInfo?.errorMessage}
-          </div>
-          <div className="compose-lyric-footer-button-container">
-            {albumInfo?.output ? (
-              <div
-                className="compose-lyric-button"
-                onClick={() => handleDownloadAlbum()}
-              >
-                Download
+        ) : (
+          <>
+            <div className="compose-lyric-input">
+              <div className="compose-lyric-input-heading">
+                Album Cover Prompt*
               </div>
-            ) : null}
-            <div
-              style={{ marginLeft: "5%" }}
-              className="compose-lyric-button"
-              onClick={() => handleGenerateAlbum()}
-            >
-              Generate
+              <div className="compose-lyric-input-box">
+                <textarea
+                  value={albumInfo?.input}
+                  className="compose-lyric-textarea"
+                  onChange={(e) =>
+                    handleChangeAlbumInfo("input", e.target.value)
+                  }
+                />
+              </div>
             </div>
-          </div>
-        </div>
+            <div className="compose-lyric-output">
+              <div className="compose-lyric-output-heading">
+                Album Cover Output
+              </div>
+              <div className="compose-lyric-output-box">
+                {albumInfo?.output ? (
+                  <textarea
+                    disabled={true}
+                    value={albumInfo?.output}
+                    className="compose-lyric-textarea"
+                  />
+                ) : (
+                  <img src={albumInfo?.output} />
+                )}
+              </div>
+            </div>
+            <div className="compose-lyric-footer">
+              <div className="compose-lyric-footer-error-container">
+                {albumInfo?.errorMessage}
+              </div>
+              <div className="compose-lyric-footer-button-container">
+                {albumInfo?.output ? (
+                  <div
+                    className="compose-lyric-button"
+                    onClick={() => handleDownloadAlbum()}
+                  >
+                    Download
+                  </div>
+                ) : null}
+                <div
+                  style={{ marginLeft: "5%" }}
+                  className="compose-lyric-button"
+                  onClick={() => handleGenerateAlbum()}
+                >
+                  Generate
+                </div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

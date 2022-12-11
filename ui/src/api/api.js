@@ -41,3 +41,22 @@ export const postAlbumCover = (params) => {
       });
     });
 };
+
+export const postBgMusic = (params) => {
+  const data = {
+    text_prompt: params?.input
+  };
+  return axios
+    .post(`${API_ROOT}bg_music`, data)
+    .then((res) => {
+      if (res?.status === 201) {
+        toast.success(MESSAGE.SUC_POST_BG_MUSIC, { theme: "dark" });
+        return res?.data;
+      } else throw res;
+    })
+    .catch((err) => {
+      toast.error(err?.response?.data?.message || MESSAGE.ERR_POST_BG_MUSIC, {
+        theme: "dark",
+      });
+    });
+};
