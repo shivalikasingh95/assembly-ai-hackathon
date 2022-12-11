@@ -5,3 +5,5 @@ fastapi
 uvicorn
 yaml
 python-multipart
+midi2audio
+boto3

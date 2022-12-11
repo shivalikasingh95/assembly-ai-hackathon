@@ -49,3 +49,17 @@ lyric_generation:
 album_cover_art:
   model_name: "prompthero/openjourney"
   model_version: "9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb"
+
+bg_music:
+  max_pos_len: 4096
+  pi_level: 2
+  ignore_meta_loss: 1
+  ratio: 4
+  bpe: "_bpe"
+  max_measure_cnt: 5
+  max_chord_measure_cnt: 0
+  midi_output_folder: "generated_audio/midi/"
+  mp3_output_folder: "generated_audio/mp3/"
+  wandb_project_name: "SymphonyNet"
+  sampling_rate: 16000
+  s3_bucket_name: "assemblyai-hackathon"
