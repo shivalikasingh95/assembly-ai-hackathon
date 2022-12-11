@@ -1,0 +1,5 @@
+pyyaml
+replicate
+openai
+fastapi
+uvicorn

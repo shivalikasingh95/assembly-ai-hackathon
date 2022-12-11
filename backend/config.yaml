@@ -1,0 +1,28 @@
+add_album_cover_flag: True
+
+lyric_generation:
+  ## genre of music to select from for generation of lyrics
+  genre: {
+    " ": [],
+    "Pop": ["Dua Lipa", "Shawn Mendes", "Harry Styles", "Ed Sheeran", "Taylor Swift", "Katy Perry"],
+    "Rock": ["Queens", "Beatles", "Avril Lavigne", "Imagine dragons", "Metallica", "Pink Floyd"],
+    "Rap": ["Eminem", "Tupac Shakur", "Drake", "B.I.G"],
+    "Metal": ["Black Sabbath", "Slipknot", "Korn", "System of a down"]
+  }
+
+  ## GPT3 model variant to use
+  engine: "davinci"
+
+  ## temperature for GPT3 model - helps in deciding how the model chooses from its next choice of tokens.
+  ## Low temp -> produces more predictable output. High temp -> produces more creative output
+  temperature: 0.7
+
+  ## max_tokens to output for lyrics generation model (GPT3)
+  max_tokens: 256
+
+  ## frequency_penalty for lyrics generation model (GPT3)
+  frequency_penalty: 0.3
+
+album_cover_art:
+  model_name: "prompthero/openjourney"
+  model_version: "9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb"
