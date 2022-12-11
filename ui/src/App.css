@@ -1,0 +1,144 @@
+.app-root {
+  height: 100vh;
+}
+
+.app-header-root {
+  height: 6vh;
+  display: flex;
+  padding: 0% 2%;
+  position: sticky;
+  color: #ffffff;
+  font-weight: bold;
+  align-items: center;
+  background: #000000;
+  box-sizing: border-box;
+}
+
+.app-content-root {
+  height: 94vh;
+}
+
+.dashboard-index-root {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-index-box-root {
+  width: 20%;
+  display: flex;
+  cursor: pointer;
+  margin-right: 2%;
+  align-items: center;
+  flex-direction: column;
+}
+
+.dashboard-index-box-image {
+  margin-bottom: 40px;
+}
+
+.dashboard-index-box-content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.dashboard-index-box-content-text {
+  padding: 0px;
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 1.3em;
+  margin-bottom: 10px;
+}
+
+.dashboard-index-box-content-description {
+  width: 75%;
+  padding: 0px;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.compose-lyric-root {
+  height: 100%;
+}
+
+.compose-lyric-root-inner {
+  padding: 2%;
+  height: 100%;
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+}
+
+.compose-lyric-input {
+  height: 43%;
+  display: flex;
+  margin-bottom: 2%;
+  flex-direction: column;
+}
+
+.compose-lyric-input-heading {
+  height: 5%;
+  margin-bottom: 1%;
+}
+
+.compose-lyric-input-box {
+  height: 94%;
+}
+
+.compose-lyric-output {
+  height: 43%;
+  display: flex;
+  margin-bottom: 2%;
+  flex-direction: column;
+}
+
+.compose-lyric-output-heading {
+  height: 5%;
+  margin-bottom: 1%;
+}
+
+.compose-lyric-output-box {
+  height: 94%;
+}
+
+.compose-lyric-footer {
+  height: 6%;
+  display: flex;
+}
+
+.compose-lyric-footer-error-container {
+  width: 50%;
+  display: flex;
+  align-items: center;
+}
+
+.compose-lyric-footer-button-container {
+  width: 50%;
+  display: flex;
+  justify-content: end;
+}
+
+.compose-lyric-textarea {
+  width: 100%;
+  resize: none;
+  height: 100%;
+}
+
+.compose-lyric-button {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  cursor: pointer;
+  color: #ffffff;
+  border-radius: 500px;
+  align-items: center;
+  justify-content: center;
+  background-color: #000000;
+}
+
+.compose-lyric-button:hover {
+  transform: scale(1.04);
+}
