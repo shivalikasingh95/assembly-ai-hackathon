@@ -112,6 +112,7 @@
 .compose-lyric-footer-error-container {
   width: 50%;
   display: flex;
+  color: #ed6c02;
   align-items: center;
 }
 
@@ -141,4 +142,41 @@
 
 .compose-lyric-button:hover {
   transform: scale(1.04);
+}
+
+.compose-lyric-root-loading {
+  padding: 2%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+ justify-content: center;
+}
+
+.compose-bgmusic-root {
+  height: 100%;
+}
+
+.compose-bgmusic-root-inner {
+  padding: 2%;
+  height: 100%;
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+}
+
+.compose-bgmusic-inputContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2%;
+}
+
+.compose-bgmusic-outputContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2%;
+}
+
+.compose-bgmusic-heading {
+  margin-bottom: 1%;
 }
