@@ -13,7 +13,7 @@ wandb.init(project=project_name,
 
 is_best = True 
 art = wandb.Artifact(f"symphonynet-{wandb.run.id}", "model")
-art.add_file(f"checkpoints/checkpoint_last_linear_4096_chord_bpe_hardloss1_PI2.pt")
+art.add_file(f"SymphonyNet/ckpt/checkpoint_last_linear_4096_chord_bpe_hardloss1_PI2.pt")
 wandb.log_artifact(art, aliases=["best", "latest"] if is_best else None)
 wandb.run.link_artifact(art, model_collection_name, ["latest"])
 
