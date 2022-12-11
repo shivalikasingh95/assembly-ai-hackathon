@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 
+import { postAlbumCover } from "../api/api";
+
 const ComposeAlbumIndex = () => {
+  const [loading, setLoading] = useState(false);
   const [albumInfo, setAlbumInfo] = useState({
     input: "",
     output: "",
@@ -16,6 +19,20 @@ const ComposeAlbumIndex = () => {
 
   const handleGenerateAlbum = async () => {
     if (albumInfo?.input) {
+      setLoading(true);
+      albumInfo?.errorMessage !== "" &&
+        setAlbumInfo({
+          ...albumInfo,
+          errorMessage: "",
+        });
+      const data = await postAlbumCover(albumInfo);
+      if (data) {
+        setAlbumInfo({
+          ...albumInfo,
+          output: data?.output_album,
+        });
+      }
+      setLoading(false);
     } else {
       setAlbumInfo({
         ...albumInfo,
@@ -42,11 +59,15 @@ const ComposeAlbumIndex = () => {
         <div className="compose-lyric-output">
           <div className="compose-lyric-output-heading">Album Cover Output</div>
           <div className="compose-lyric-output-box">
-            <textarea
-              disabled={true}
-              value={albumInfo?.output}
-              className="compose-lyric-textarea"
-            />
+            {albumInfo?.output ? (
+              <textarea
+                disabled={true}
+                value={albumInfo?.output}
+                className="compose-lyric-textarea"
+              />
+            ) : (
+              <img src={albumInfo?.output} />
+            )}
           </div>
         </div>
         <div className="compose-lyric-footer">

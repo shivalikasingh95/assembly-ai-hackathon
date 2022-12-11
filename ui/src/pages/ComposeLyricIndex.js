@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 
+import { postLyric } from "../api/api";
+
 const ComposeLyricIndex = () => {
+  const [loading, setLoading] = useState(false);
   const [lyricsInfo, setLyricsInfo] = useState({
     input: "",
     output: "",
@@ -16,6 +19,20 @@ const ComposeLyricIndex = () => {
 
   const handleGenerateLyic = async () => {
     if (lyricsInfo?.input) {
+      setLoading(true);
+      lyricsInfo?.errorMessage !== "" &&
+        setLyricsInfo({
+          ...lyricsInfo,
+          errorMessage: "",
+        });
+      const data = await postLyric(lyricsInfo);
+      if (data) {
+        setLyricsInfo({
+          ...lyricsInfo,
+          output: data?.output_lyrics,
+        });
+      }
+      setLoading(false);
     } else {
       setLyricsInfo({
         ...lyricsInfo,
