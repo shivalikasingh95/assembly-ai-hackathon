@@ -3,7 +3,7 @@ import eyed3
 from eyed3.id3.frames import ImageFrame
 import sys
 import os
-sys.path.append("..ml/")
+sys.path.append("../ml/")
 from wandb_load_model import get_music_gen_model
 from SymphonyNet.src.fairseq.gen_utils import (
     process_prime_midi, 
@@ -82,12 +82,12 @@ def generate_music(config: dict, midi_file_path: str):
     
     ## generate note sequence output using SymphonyNet model
     while(True):
-    try:
-        generated, ins_logits = gen_one(music_gen_model, prime, MIN_LEN = 1024)
-        break
-    except Exception as e:
-        print(e)
-        continue
+        try:
+            generated, ins_logits = gen_one(music_gen_model, prime, MIN_LEN = 1024)
+            break
+        except Exception as e:
+            print(e)
+            continue
     trk_ins_map = get_trk_ins_map(generated, ins_logits)
     note_seq = get_note_seq(generated, trk_ins_map)
     
@@ -136,7 +136,7 @@ def upload_file_to_s3(mp3_file_path:str, s3_bucket_name: str):
         Bucket=s3_bucket_name,
     )
 
-def delete_local_audio_files(midi_file_path: str, mp3_file_path: str)
+def delete_local_audio_files(midi_file_path: str, mp3_file_path: str):
     """
     This function helps to delete midi & mp3 files generated locally after upload to s3
     Args:

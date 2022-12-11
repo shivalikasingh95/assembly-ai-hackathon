@@ -2,7 +2,7 @@ add_album_cover_flag: True
 
 lyric_generation:
   ## genre of music to select from for generation of lyrics
-  "Default": {
+  " ": {
     artists: ["Shawn Mendes", "Harry Styles", "Ed Sheeran", "Taylor Swift", "Katy Perry", "Beatles", "Avril Lavigne","Black Sabbath", "Slipknot", "Imagine dragons", "Pink Floyd", "Eminem", "Tupac Shakur", ],
     temperature: 0.7,
     frequency_penalty: 0.5,

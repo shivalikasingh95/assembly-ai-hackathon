@@ -1,12 +1,25 @@
 import os
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from app.album_cover import generate_album_cover_art
 from app.lyric_generation import generate_song_lyrics
-from app.bg_music import generate_background_music, generate_music
+from app.bg_music import generate_background_music
 import yaml
 import uvicorn
-import boto3
+from pydantic import BaseModel
+from typing import Optional
+
+class album_input(BaseModel):
+    text_prompt: str
+
+class lyric_input(BaseModel):
+    text_prompt: str
+    genre: Optional[str] = " "
+
+class bgm_input(BaseModel):
+    url: Optional[str] = None
+    mp3_file: Optional[UploadFile] = None
 
 ## Load API KEY TOKENS
 REPLICATE_API_TOKEN = os.environ.get("REPLICATE_API_TOKEN")
@@ -18,6 +31,13 @@ with open('config.yaml', 'r') as file:
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 ## Define App routes
 @app.get("/")
@@ -30,8 +50,8 @@ def home():
     startup_msg: dict = {"message": "AssemblyAI hackathon submission"}
     return startup_msg
 
-@app.post("/lyric_generation")
-def lyric_generation(text_prompt: str, genre: str = " "):
+@app.post("/api/v1/lyric_generation")
+def lyric_generation(data: lyric_input):
     """
     Route for generating song lyrics based on user prompt
     Args:
@@ -40,15 +60,13 @@ def lyric_generation(text_prompt: str, genre: str = " "):
     Returns:
         response (str): Model response containing song lyrics as output
     """
-    print(text_prompt)
-    print(OPENAI_API_KEY)
-    prompts = {"genre": genre, "text": text_prompt}
+    prompts = {"genre": data.genre, "text": data.text_prompt}
     lyrics_gen_config = config["lyric_generation"]
     response = generate_song_lyrics(prompts, lyrics_gen_config)
     return JSONResponse(response, status_code=201)
 
-@app.post("/album_cover")
-def album_cover_input(text_prompt: str):
+@app.post("/api/v1/album_cover")
+def album_cover_input(data: album_input):
     """
     Route for generating album/song cover art based on user prompt
     Args:
@@ -56,20 +74,13 @@ def album_cover_input(text_prompt: str):
     Returns:
         response (str): Model response containing generated image link
     """
-    print(text_prompt)
-    print(REPLICATE_API_TOKEN)
-    
     album_art_config = config["album_cover_art"]
-    if fine_tuned_album_model:
-        response = generate_album_art_using_dreambooth(album_art_config, text_prompt)
-    else:
-        ## call replicate model
-        response = generate_album_cover_art(album_art_config, text_prompt)
-
+    response = generate_album_cover_art(album_art_config, data.text_prompt)
     return JSONResponse(response, status_code=201)
 
-@app.post("/bg_music")
-def bg_music(url: str = None, mp3_file: UploadFile = File(...)):
+@app.post("/api/v1/bg_music")
+def bg_music(data: bgm_input):
+    #url: str = None, mp3_file: UploadFile = File(...)):
     """
     Route for generating album/song cover art based on user prompt
     Args:
@@ -77,17 +88,19 @@ def bg_music(url: str = None, mp3_file: UploadFile = File(...)):
     Returns:
         response (str): Model response containing generated image link
     """
-    if url is not None:
-        midi_file_name = download_file_from_s3(s3_bucket_name, mp3_file)
-        # mp3_file = "mp3"
-    # if mp3_file is not None:
-    #     # check extension
-    #     # convert mp3_file to mid
-    #     mid_file = "mid file"
+    # if data.text_prompt is not None:
+    #     #download file
+    #     try:
+    #         mp3_file = "mp3"
+    #     except:
+    #         mp3_file = None
+    midi_file_name = download_file_from_s3(s3_bucket_name, data.text_prompt)
+
     
     bg_music_config = config["bg_music"]
     response = generate_music(bg_music_config, midi_file_name)
     return JSONResponse(response, status_code=201)
+
 
 
 def download_file_from_s3(s3_bucket_name, midi_file_name):

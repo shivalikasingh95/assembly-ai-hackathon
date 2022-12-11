@@ -3,10 +3,12 @@ replicate
 openai
 fastapi
 uvicorn
-yaml
 python-multipart
+eyed3
 midi2audio
 boto3
 git+https://github.com/huggingface/diffusers.git
 accelerate
 transformers
+wandb
+tensorboard
