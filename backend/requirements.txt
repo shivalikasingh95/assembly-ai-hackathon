@@ -4,3 +4,4 @@ openai
 fastapi
 uvicorn
 yaml
+python-multipart

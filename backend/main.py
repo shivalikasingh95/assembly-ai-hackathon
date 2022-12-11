@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
 from app.album_cover import generate_album_cover_art
 from app.lyric_generation import generate_song_lyrics
@@ -62,7 +62,7 @@ def album_cover_input(text_prompt: str):
     return JSONResponse(response, status_code=201)
 
 @app.post("/bg_music")
-def bg_music(url: str = None, mp3_file: str = None):
+def bg_music(url: str = None, mp3_file: UploadFile = File(...)):
     """
     Route for generating album/song cover art based on user prompt
     Args:
@@ -79,7 +79,7 @@ def bg_music(url: str = None, mp3_file: str = None):
         mid_file = "mid file"
     print(REPLICATE_API_TOKEN)
     album_art_config = config["album_cover_art"]
-    response = generate_background_music(album_art_config, text_prompt)
+    response = generate_background_music(album_art_config, mp3_file)
     return JSONResponse(response, status_code=201)
 
 

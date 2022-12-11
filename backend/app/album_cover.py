@@ -20,4 +20,4 @@ def generate_album_cover_art( config, prompt: str = "a 19th century portrait of 
     print(prompt + "album cover art", "prompt")
     response = version.predict(prompt=prompt + "album cover art", num_outputs=4)
     
-    return {"output_album" : response[0]}
+    return {"output_album": response}

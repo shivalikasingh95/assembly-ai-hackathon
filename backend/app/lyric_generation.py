@@ -21,7 +21,8 @@ def generate_song_lyrics(inputs: dict, config: dict):
   artists = config["artists"]
   artist = random.choice(artists)
 
-  prompt_text = f"Artist:{artist}\n\nLyrics:\n"
+  prompt_text = f"Prompt:{inputs['text']}\n\nArtist:{artist}\n\nLyrics:\n"
+  print(prompt_text)
   ## get model prediction
   response = openai.Completion.create(
     engine=engine,
@@ -31,4 +32,4 @@ def generate_song_lyrics(inputs: dict, config: dict):
     frequency_penalty=config["frequency_penalty"]
   )
   print(response)
-  return {"output_lyrics": response}
+  return {"output_lyrics": response["choices"][0]["text"]}
