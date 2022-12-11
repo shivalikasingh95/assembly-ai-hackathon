@@ -3,7 +3,7 @@ from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
 from app.album_cover import generate_album_cover_art
 from app.lyric_generation import generate_song_lyrics
-from app.bg_music import generate_background_music
+from app.bg_music import generate_background_music, generate_music
 import yaml
 import uvicorn
 
@@ -77,19 +77,26 @@ def bg_music(url: str = None, mp3_file: UploadFile = File(...)):
         response (str): Model response containing generated image link
     """
     if url is not None:
-        #download file
-        mp3_file = "mp3"
-    if mp3_file is not None:
-        # check extension
-        # convert mp3_file to mid
-        mid_file = "mid file"
-    print(REPLICATE_API_TOKEN)
-    album_art_config = config["album_cover_art"]
-    response = generate_background_music(album_art_config, mp3_file)
+        midi_file_name = download_file_from_s3(s3_bucket_name, mp3_file)
+        # mp3_file = "mp3"
+    # if mp3_file is not None:
+    #     # check extension
+    #     # convert mp3_file to mid
+    #     mid_file = "mid file"
+    
+    bg_music_config = config["bg_music"]
+    response = generate_music(bg_music_config, midi_file_name)
     return JSONResponse(response, status_code=201)
 
 
-
+def download_file_from_s3(s3_bucket_name, midi_file_name):
+    s3 = boto3.client("s3")
+    midi_file_name = "input_audio/"+midi_file_name
+    s3.download_file(
+        Bucket=s3_bucket_name, 
+        Filename=midi_file_name
+    )
+    return midi_file_name
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8001, reload=True)
