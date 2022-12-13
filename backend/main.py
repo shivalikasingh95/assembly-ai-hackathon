@@ -19,7 +19,8 @@ class lyric_input(BaseModel):
     genre: Optional[str] = " "
 
 class bgm_input(BaseModel):
-    url: Optional[str] = None
+    # url: Optional[str] = None
+    example_file_name: Optional[str] = None
     mp3_file: Optional[UploadFile] = None
 
 ## Load API KEY TOKENS
@@ -34,7 +35,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3001"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -101,25 +102,23 @@ def bg_music(data: bgm_input):
     return JSONResponse(response, status_code=201)
 
 @app.post("/api/v1/bg_music_file_input")
-def bg_music(file: UploadFile = File(...)):
+def bg_music(example_file_name: str, file: UploadFile = File(...)):
     #url: str = None, mp3_file: UploadFile = File(...)):
     """
-    Route for generating album/song cover art based on user prompt
+    Route for generating music note sequence based on user input audio sequence
     Args:
-        text_prompt (str): Input text prompt by user which will be fed to model for generating album/song art
+        example_file_name (str): Input text prompt by user which will be fed to model for generating album/song art
     Returns:
-        response (str): Model response containing generated image link
+        response (str): 
     """
-    # if data.text_prompt is not None:
-    #     #download file
-    #     try:
-    #         mp3_file = "mp3"
-    #     except:
-    #         mp3_file = None
-    print("recieved")
     bg_music_config = config["bg_music"]
-#     midi_file_name = download_file_from_s3(bg_music_config["s3_bucket_name"], data.url)
-    response = generate_music(bg_music_config, "/home/ubuntu/AssemblyAI/assembly-ai-hackathon/backend/app/input_audio/test.mid")
+    if file is not None:
+        midi_file_path = download_file_from_s3(bg_music_config["s3_bucket_name"], file.filename)
+    else:
+        ## load from examples
+        midi_file_path = "examples/"+example_file_name
+
+    response = generate_music(bg_music_config, midi_file_path)
     return JSONResponse(response, status_code=201)
 
 

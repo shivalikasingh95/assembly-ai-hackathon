@@ -18,7 +18,7 @@ const bgMusicS3Urls = [
 const ComposeBgMusicIndex = () => {
   const [loading, setLoading] = useState(false);
   const [bgMusicInfo, setBgMusicInfo] = useState({
-    type: "s3",
+    type: "file",
     input: "",
     output: "",
     errorMessage: "",
@@ -62,7 +62,7 @@ const ComposeBgMusicIndex = () => {
       if (data) {
         setBgMusicInfo({
           ...bgMusicInfo,
-          output: data?.output_bgmusic,
+          output: "../../../backend/"+data?.output_bg_music,
         });
       }
       setLoading(false);
@@ -111,7 +111,7 @@ const ComposeBgMusicIndex = () => {
           </div>
         ) : (
           <>
-            <div className="compose-bgmusic-radioContainer">
+            {/* <div className="compose-bgmusic-radioContainer">
               <div className="radio">
                 <label>
                   <input
@@ -134,12 +134,12 @@ const ComposeBgMusicIndex = () => {
                   Upload from local file system
                 </label>
               </div>
-            </div>
+            </div> */}
             <div className="compose-bgmusic-inputContainer">
               <div className="compose-bgmusic-heading">
                 Background Music Prompt*
               </div>
-              {bgMusicInfo?.type === "s3" ? (
+              {/* {bgMusicInfo?.type === "s3" ? (
                 <select
                   value={bgMusicInfo?.input}
                   onChange={handleSelectChange}
@@ -154,7 +154,7 @@ const ComposeBgMusicIndex = () => {
                     </option>
                   ))}
                 </select>
-              ) : null}
+              ) : null} */}
               {bgMusicInfo?.type === "file" ? (
                 <input type="file" onChange={onFileChange} />
               ) : null}

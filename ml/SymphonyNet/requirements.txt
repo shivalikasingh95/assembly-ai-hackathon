@@ -1,4 +1,4 @@
-torch==1.7.1
+torch
 fairseq==0.10.2
 tensorboardX
 six

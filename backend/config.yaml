@@ -60,8 +60,8 @@ bg_music:
   bpe: "_bpe"
   max_measure_cnt: 5
   max_chord_measure_cnt: 0
-  midi_output_folder: "generated_audio/midi/"
-  mp3_output_folder: "generated_audio/mp3/"
+  midi_out_folder: "generated_audio/midi/"
+  mp3_out_folder: "generated_audio/mp3/"
   wandb_project_name: "SymphonyNet"
   sampling_rate: 16000
   s3_bucket_name: "assemblyai-hackathon"
