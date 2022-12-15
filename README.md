@@ -9,15 +9,15 @@ We think it's the kind of companion any music artist would want whose muse is be
 ### Technical Overview:
 The project consists of 3 main modules:
 1. **Lyrics Generation**: We leveraged OpenAI's GPT-3 model variant (da-vinci) to build this module.
-2. **Cover Art Generation**: We used 2 models to support this module. We felt the [OpenJourney](https://replicate.com/prompthero/openjourney) model on Replicate itself was a great and can generate a lot of images that can qualify as quality cover art. But, we thought it would be useful if we could also fine tune a Stable Diffusion model using Dreambooth on some popular music cover art and use that as well as part of our cover art module.
+2. **Cover Art Generation**: We used 2 models to support this module. We felt the [OpenJourney](https://replicate.com/prompthero/openjourney) model on Replicate itself is great and can generate a lot of images that can qualify as quality cover art. But, we thought it would be useful if we could also fine tune a Stable Diffusion model using Dreambooth on some popular music cover art and use that as well as part of our cover art module.
 Check out this [space](https://huggingface.co/spaces/shivi/sd-album-covers-demo) on Hugging Face Hub to know more details of our custom model.
 4. **Music Generation**: We used [SymphonyNet](https://github.com/symphonynet/SymphonyNet) to build this module. SymphonyNet is an open-source project that aims to generate complex multi-track and multi-instrument music like symphony. Their method is fully compatible with other types of music like pop, piano, solo music, etc. So using our music generation module, the user can upload a small composition of their choice and then SymphonyNet will model the input music sequence to generate the corresponding output music sequence.
 
 ### How we built it
 It was a team effort with each of us looking into various modules that interested us and pitching in to build the app.
-1. **Nitin Premanand** - handled everything related to the development of the frontend
+1. **Nitin Premanand** - handled everything related to the development of the frontend as well as integrating the backend APIs with the frontend of the web app.
 2. **Harshini Krishnamurthy** - took care of setting up the backend for the application as well as working on setting up the lyrics generation module along with integrating [Replicate's openjourney](https://replicate.com/prompthero/openjourney) model for cover art generation.
-3. **Shivalika Singh** - worked on fine tuning stable diffusion using Dreambooth for creating a [custom model](https://huggingface.co/shivi/sd-album-covers) for cover art generation along with setting up the music generation module of the project using [SymphonyNet](https://github.com/symphonynet/SymphonyNet)
+3. **Shivalika Singh** - worked on fine tuning stable diffusion using Dreambooth for creating a [custom model](https://huggingface.co/shivi/sd-album-covers) for cover art generation along with setting up the music generation module of the project using [SymphonyNet](https://github.com/symphonynet/SymphonyNet).
 
 
 ### Challenges we ran into
