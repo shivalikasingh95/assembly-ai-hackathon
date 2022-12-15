@@ -1,4 +1,4 @@
-# Project Submission for AssemblyAI Hackathon 
+# Project Submission for [AssemblyAI Hackathon](https://hackathon.assemblyai.com/) 
 
 ## Chords & Art - Your AI buddy for your Music needs
 
