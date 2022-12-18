@@ -1,27 +1,16 @@
 import os
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from app.album_cover import generate_album_cover_art
-from app.lyric_generation import generate_song_lyrics
-from app.bg_music import generate_music
+from app.generate_cover_art import generate_cover_art_replicate, generate_cover_art_HF
+from app.generate_lyrics import generate_song_lyrics
+from app.generate_music import generate_music
 import yaml
 import uvicorn
-from pydantic import BaseModel
+from app.models import cover_art_input, lyrics_input
+from app.utils import download_file_from_s3
 from typing import Optional
-import boto3
-
-class album_input(BaseModel):
-    text_prompt: str
-
-class lyric_input(BaseModel):
-    text_prompt: str
-    genre: Optional[str] = " "
-
-class bgm_input(BaseModel):
-    # url: Optional[str] = None
-    example_file_name: Optional[str] = None
-    mp3_file: Optional[UploadFile] = None
+import traceback
 
 ## Load API KEY TOKENS
 REPLICATE_API_TOKEN = os.environ.get("REPLICATE_API_TOKEN")
@@ -35,7 +24,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -46,90 +35,94 @@ app.add_middleware(
 def home():
     """
     Home Router for our Music App
+    
     Returns:
         startup_msg (dict): Message to be displayed for app home route
     """
     startup_msg: dict = {"message": "AssemblyAI hackathon submission"}
     return startup_msg
 
-@app.post("/api/v1/lyric_generation")
-def lyric_generation(data: lyric_input):
+@app.post("/api/v1/lyrics/generate") #lyric_generation
+def generate_lyrics(lyrics_input: lyrics_input):
     """
     Route for generating song lyrics based on user prompt
+    
     Args:
-        text_prompt (str): Input text prompt by user which will be fed to model for lyrics generation
-        genre (str): User input for genre of music which will help in generating better output using the model
+        text_prompt (str): Input text prompt by user which will be fed to model for lyrics generation.
+        genre (str): User input for genre of music which will help in generating better output using the model.
+    
     Returns:
         response (str): Model response containing song lyrics as output
     """
-    prompts = {"genre": data.genre, "text": data.text_prompt}
     lyrics_gen_config = config["lyric_generation"]
-    response = generate_song_lyrics(prompts, lyrics_gen_config)
+    try:
+        generated_lyrics = generate_song_lyrics(lyrics_input, lyrics_gen_config)
+        response = {"output_lyrics": generated_lyrics}
+    except Exception as e:
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
     return JSONResponse(response, status_code=201)
 
-@app.post("/api/v1/album_cover")
-def album_cover_input(data: album_input):
+@app.post("/api/v1/cover_art/generate") #album_cover
+def generate_cover_art(cover_art_inputs: cover_art_input):
     """
     Route for generating album/song cover art based on user prompt
+    
     Args:
         text_prompt (str): Input text prompt by user which will be fed to model for generating album/song art
+    
     Returns:
         response (str): Model response containing generated image link
     """
-    album_art_config = config["album_cover_art"]
-    response = generate_album_cover_art(album_art_config, data.text_prompt)
+    album_art_config = config["cover_art"]
+    try:
+        if cover_art_inputs.model_choice == "replicate":
+            ## load model from Replicate
+            generated_img_links = generate_cover_art_replicate(album_art_config, cover_art_inputs)
+            response = {"generated_cover_art": generated_img_links} #output_album
+
+        else:
+            ## else load custom/default model from HF Hub
+            img_urls_list,base64_list = generate_cover_art_HF(album_art_config, cover_art_inputs)
+            response = {"generated_cover_art": img_urls_list, "encoded_imgs": base64_list} #output_album
+
+    except Exception as e:
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
     return JSONResponse(response, status_code=201)
 
-@app.post("/api/v1/bg_music")
-def bg_music(data: bgm_input):
-    #url: str = None, mp3_file: UploadFile = File(...)):
-    """
-    Route for generating album/song cover art based on user prompt
-    Args:
-        text_prompt (str): Input text prompt by user which will be fed to model for generating album/song art
-    Returns:
-        response (str): Model response containing generated image link
-    """
-    # if data.text_prompt is not None:
-    #     #download file
-    #     try:
-    #         mp3_file = "mp3"
-    #     except:
-    #         mp3_file = None
-    bg_music_config = config["bg_music"]
-    midi_file_name = download_file_from_s3(bg_music_config["s3_bucket_name"], data.url)
-    response = generate_music(bg_music_config, midi_file_name)
-    return JSONResponse(response, status_code=201)
-
-@app.post("/api/v1/bg_music_file_input")
-def bg_music(example_file_name: str, file: UploadFile = File(...)):
-    #url: str = None, mp3_file: UploadFile = File(...)):
+@app.post("/api/v1/music/generate") #bg_music_file_input
+def generate_bg_music(example_file_name: Optional[str], file: UploadFile = File(...)):
     """
     Route for generating music note sequence based on user input audio sequence
+    
     Args:
         example_file_name (str): Input text prompt by user which will be fed to model for generating album/song art
+    
     Returns:
         response (str): 
     """
     bg_music_config = config["bg_music"]
-    if file is not None:
-        midi_file_path = download_file_from_s3(bg_music_config["s3_bucket_name"], file.filename)
-    else:
-        ## load from examples
-        midi_file_path = "examples/"+example_file_name
+    midi_file_path = "input_audio/"+ file.filename
 
-    response = generate_music(bg_music_config, midi_file_path)
+    try:
+        if not os.path.exists(midi_file_path):
+            midi_file_path = download_file_from_s3(bg_music_config["s3_bucket_name"], midi_file_path)
+        
+        # midi_file_path = "examples/"+file.filename
+
+        mp3_output_path = generate_music(bg_music_config, midi_file_path)
+        response = {"output_bg_music": mp3_output_path}
+    except Exception as e:
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
     return JSONResponse(response, status_code=201)
 
 
-def download_file_from_s3(s3_bucket_name, midi_file_name):
-    s3 = boto3.client("s3")
-    midi_file_name = "input_audio/"+midi_file_name
-    s3.download_file(
-        Bucket=s3_bucket_name, 
-        Filename=midi_file_name
-    )
-    return midi_file_name
+
     
      
 
