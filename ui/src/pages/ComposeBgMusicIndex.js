@@ -72,7 +72,7 @@ const ComposeBgMusicIndex = () => {
       if (data) {
         setBgMusicInfo({
           ...bgMusicInfo,
-          output: data?.output_bgmusic,
+          output: "../../../backend/"+data?.output_bg_music,
         });
       }
       setLoading(false);

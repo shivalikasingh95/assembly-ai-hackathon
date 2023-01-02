@@ -2,7 +2,7 @@ import axios from "axios";
 import MESSAGE from "./apiMessage";
 import { toast } from "react-toastify";
 
-const API_ROOT = "http://localhost:8001/api/v1/";
+const API_ROOT = "http://3.7.63.241/:8000/api/v1/";
 
 export const postLyric = (params) => {
   const data = {

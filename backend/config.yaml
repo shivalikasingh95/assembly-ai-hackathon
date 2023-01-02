@@ -1,11 +1,18 @@
-add_album_cover_flag: True
-
 lyric_generation:
-  ## genre of music to select from for generation of lyrics
-  " ": {
+
+  ## GPT3 model variant to use
+  engine: "davinci"
+
+  ## music genre specific config to control generation of lyrics
+  "common": {
     artists: ["Shawn Mendes", "Harry Styles", "Ed Sheeran", "Taylor Swift", "Katy Perry", "Beatles", "Avril Lavigne","Black Sabbath", "Slipknot", "Imagine dragons", "Pink Floyd", "Eminem", "Tupac Shakur", ],
+    
+    ## temperature for GPT3 model - helps in deciding how the model chooses from its next choice of tokens.
+    ## Low temp -> produces more predictable output. High temp -> produces more creative output
     temperature: 0.7,
+    ## frequency_penalty for lyrics generation model (GPT3)
     frequency_penalty: 0.5,
+    ## max_tokens to output for lyrics generation model (GPT3)
     max_tokens: 256
   }
   "Pop": {
@@ -33,24 +40,36 @@ lyric_generation:
     max_tokens: 256
   }
 
-  ## GPT3 model variant to use
-  engine: "davinci"
+ # intricate, elegant, highly detailed, digital painting, artstation, concept art, smooth, sharp focus, illustration, 
+ # art by artgerm and greg rutkowski and alphonse mucha, 8k, mdjrny-v4 style 
 
-  ## temperature for GPT3 model - helps in deciding how the model chooses from its next choice of tokens.
-  ## Low temp -> produces more predictable output. High temp -> produces more creative output
-  temperature: 0.7
+ # matte painting 
+ # by studio ghibli, makoto shinkai, by artgerm, by wlop, by greg rutkowski, volumetric lighting, octane render, 4 k resolution, 
+ # trending on artstation, masterpiece
 
-  ## max_tokens to output for lyrics generation model (GPT3)
-  max_tokens: 256
+ # whimsical fantasy 
+ # misty soft pink, aqua, soft apricot, smoke fractal, moody and big scale realistic flowers, octane render,
+ # by josephine wall art, isabelle menin, Jean, amy brown
 
-  ## frequency_penalty for lyrics generation model (GPT3)
-  frequency_penalty: 0.3
+# Dramatic, Dark, Super-Resolution, Evil, Neon Lamp, Cinematic Lighting, 
+# Chromatic Aberration, insanely detailed and intricate, hypermaximalist, elegant, ornate, hyper realistic, super detailed,
+# Unreal Engine
 
-album_cover_art:
+# masterpiece wallpaper, shinny metal, city, low angle,
+
+
+cover_art:
   replicate_model_name: "prompthero/openjourney"
   replicate_model_version: "9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb"
+  hf_default_model_name: "runwayml/stable-diffusion-v1-5"
   hf_dreambooth_model_name: "shivi/sd-album-covers" #"shivi/sd-division-bell"
   num_samples_for_hf_model: 1
+  s3_bucket_name: "assemblyai-hackathon"
+  s3_bucket_region: "ap-south-1"
+  encode_base64: False
+  cover_art_dir: "generated_art"
+  prompt: "Dramatic, Dark, Super-Resolution, Evil, Neon Lamp, Cinematic Lighting, Chromatic Aberration, insanely detailed and intricate, hypermaximalist, elegant, ornate, hyper realistic, super detailed, Unreal Engine"
+
 
 bg_music:
   max_pos_len: 4096
@@ -60,9 +79,13 @@ bg_music:
   bpe: "_bpe"
   max_measure_cnt: 5
   max_chord_measure_cnt: 0
-  midi_output_folder: "generated_audio/midi/"
-  mp3_output_folder: "generated_audio/mp3/"
+  midi_out_folder: "generated_audio/midi/"
+  mp3_out_folder: "generated_audio/mp3/"
   wandb_project_name: "SymphonyNet"
   sampling_rate: 16000
   s3_bucket_name: "assemblyai-hackathon"
   delete_audio_files: False
+  data_base_dir: "../ml/SymphonyNet/data/"
+  sound_font_file_path: "sound_font/MuseScore_General.sf2"
+  fairseq_user_dir: "../ml/SymphonyNet/src/fairseq/linear_transformer_inference"
+  symphonynet_ckpt_path: "artifacts/symphonynet/checkpoint_last_linear_4096_chord_bpe_hardloss1_PI2.pt"

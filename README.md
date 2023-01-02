@@ -1,35 +1,49 @@
-# Project Submission for AssemblyAI Hackathon 
+# [Project Submission for AssemblyAI Hackathon](https://hackathon.assemblyai.com/) 
 
 ## Chords & Art - Your AI buddy for your Music needs
 
-We're all aware of the tremendous progress made in the generative AI space recently. With our project, `Chords & Art` we have tried to leverage the recent advancements made in this area and applied to the domain of Music.
+We're all aware of the tremendous progress made in the generative AI space recently. With our project, [Chords & Art](https://devpost.com/software/chords-art) we have tried to leverage the recent advancements made in this area and applied to the domain of Music.
 We thought it'll be extremely useful as well cool to have a project that could help address different needs that someone may have with respect to generation of music -- whether you want to write lyrics for a song, compose music or even generate cover art for your music piece -- we can help you with all of these :)
 We think it's the kind of companion any music artist would want whose muse is being uncooperative.
 
+### Technical Overview:
+The project consists of 3 main modules:
+1. **Lyrics Generation**: We leveraged OpenAI's GPT-3 model variant (da-vinci) to build this module.
+2. **Cover Art Generation**: We used 2 models to support this module. We felt the [OpenJourney](https://replicate.com/prompthero/openjourney) model on Replicate itself is great and can generate a lot of images that can qualify as quality cover art. But, we thought it would be useful if we could also fine tune a Stable Diffusion model using Dreambooth on some popular music cover art and use that as well as part of our cover art module.
+Check out this [space](https://huggingface.co/spaces/shivi/sd-album-covers-demo) on Hugging Face Hub to know more details of our custom model.
+4. **Music Generation**: We used [SymphonyNet](https://github.com/symphonynet/SymphonyNet) to build this module. SymphonyNet is an open-source project that aims to generate complex multi-track and multi-instrument music like symphony. Their method is fully compatible with other types of music like pop, piano, solo music, etc. So using our music generation module, the user can upload a small composition of their choice and then SymphonyNet will model the input music sequence to generate the corresponding output music sequence.
+
 ### How we built it
-It was a team effort with each of us looking into various models that interested us and pitching in to make the app pitch perfect.
+It was a team effort with each of us looking into various modules that interested us and pitching in to build the app.
+1. **Nitin Premanand** - handled everything related to the development of the frontend as well as integrating the backend APIs with the frontend of the web app.
+2. **Harshini Krishnamurthy** - took care of setting up the backend for the application as well as working on setting up the lyrics generation module along with integrating [Replicate's openjourney](https://replicate.com/prompthero/openjourney) model for cover art generation.
+3. **Shivalika Singh** - worked on fine tuning stable diffusion using Dreambooth for creating a [custom model](https://huggingface.co/shivi/sd-album-covers) for cover art generation along with setting up the music generation module of the project using [SymphonyNet](https://github.com/symphonynet/SymphonyNet).
 
 
 ### Challenges we ran into
-Fine tuning stable diffusion
-Conversion of midi to mp3 files
-Figuring out right settings for good lyric generation for GPT3
+1.  Figuring out how to fine tune stable diffusion for generating cool cover art with no prior experience using stable diffusion took us a little time. Thankfully this was less intimidating because of lot of useful resources created by Hugging Face such as [Dreambooth training](https://huggingface.co/blog/dreambooth).
+2. We were also working with a recent music generation model called [SymphonyNet](https://symphonynet.github.io/) for the first time. Apart from understanding how to use the model, it also required some domain knowledge like what are midi files or sound fonts and how to convert midi files to mp3 files, etc in order to integrate the model with our app.
+3. Figuring out right settings for good lyrics generation for using OpenAI's GPT-3 also took a bit of experimentation.
+
 
 ### Accomplishments that we're proud of
-Our fine tuned model for album covers
-We were able to finish all the 3 modules we planned
+1. Our fine tuned model for music cover art
+2. We were able to finish all the 3 modules we planned
 
 
 ### What we learned
-That there are amazing uses for AI and that there are so many options to leverage AI models both for creativity and for solving critical problems.
+We learnt a lot about how to leverage recent state-of-the-models for both unlocking human creativity and solving critical problems. 
+1. With respect to backend and UI integration, working with audio files was a new thing for us. SymphonyNet model outputs midi files which we were having trouble playing using our app frontend. 
+We had to figure out how to convert midi to mp3 files on the backend so that the audio can be rendered on the frontend.
+2. Figuring out how to leverage models like GPT-3, Stable Diffusion and SymphonyNet for our use case was the core of what we learnt through this project and also about so many other applications that are feasible now thanks to such generative models.
 
 ### What's next for Chords & Art
-We wish to combine the lyrics, album art, and music to create songs as a whole.
+At the moment, our lyrics, cover art and music generation modules are independent. Going forward we wish to integrate them together so that any music artist can create songs or compositions as a whole easily via the app.
 
 ### Built With
     - UI: CSS, HTML, React, Javascript
-    - Backend: Fastapi
-    - ML: OpenAI GPT3, Replicate, Stable Diffusion, SymphonyNet
+    - Backend: FastAPI
+    - ML: OpenAI GPT3, Replicate, Stable Diffusion, SymphonyNet, Hugging Face, Weights & Biases
 
 
 ## Project Setup
@@ -37,8 +51,8 @@ We wish to combine the lyrics, album art, and music to create songs as a whole.
 ### Prequisites:
 
 1. Setup Environment Variables:
-    - OPENAI_API_KEY: This token is used by APIs of OpenAI. In case you don't have an OpenAI account, you would need to create one to get your access token.
-    - REPLICATE_API_KEY: 
+    - OPENAI_API_KEY: This token is used by OpenAI API used by lyrics generation module. In case you don't have an OpenAI account, you would need to create one to get your access token.
+    - REPLICATE_API_KEY: This token is used by Replicate which is used as part of cover art generation module. In case you don't have a Replicate account, you would need to create one to get your access token.
 
 2. Login Setup:
     - aws_configure: This is required since we use S3 to download and upload some files. You need to run `aws configure` and login using your `AWS_ACCESS_KEY` and `AWS_SECRET_KEY`
@@ -65,5 +79,3 @@ After that navigate to the `backend` folder and run `pip install -r requirements
 Since the music generation APIs depend on some external modules (SymphonyNet model), you need to install the dependencies corresponding to that as well. Navigate to the `ml/SymphonyNet` folder and run `pip install -r requirements.txt` here as well.
 Now, navigate back to the `backend` folder and run `uvicorn app:main --reload` or simply run `python main.py` to start
 the backend server.
-
-3. 
