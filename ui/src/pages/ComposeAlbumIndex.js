@@ -278,7 +278,50 @@ const ComposeAlbumIndex = () => {
             </div>
             <div className="cl-right-root">
               <div className="cl-right-root-top">
-                
+                {albumInfo?.output?.length === 0 && null}
+                {albumInfo?.output?.length === 1 && (
+                  <div
+                    style={{
+                      height: "100%",
+                      display: "flex",
+                      cursor: "pointer",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <img
+                      src={albumInfo?.output[0]}
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        border:
+                          albumInfo?.download === albumInfo?.output[0]
+                            ? "1px solid #455edd"
+                            : "",
+                      }}
+                      onClick={() => handleDownloadClick(albumInfo?.output[0])}
+                    />
+                  </div>
+                )}
+                {albumInfo?.output?.length > 1 && (
+                  <div className="ca-image-root">
+                    {albumInfo.output.map((alo, ind) => {
+                      return (
+                        <div
+                          key={ind}
+                          className={
+                            alo === albumInfo?.download
+                              ? "ca-image-root-box-selected"
+                              : "ca-image-root-box"
+                          }
+                          onClick={() => handleDownloadClick(alo)}
+                        >
+                          <img src={alo} width="100%" height="100%" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
               <div className="cl-right-root-bottom">
                 <div

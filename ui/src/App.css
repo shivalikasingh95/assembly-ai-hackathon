@@ -277,50 +277,27 @@
   flex-direction: column;
 }
 
-.compose-album-input-heading {
-  height: 5%;
-  margin-bottom: 1%;
-}
-
-.compose-album-input-box {
-  height: 94%;
-}
-
-.compose-album-textarea {
-  width: 50%;
-  resize: none;
+.ca-image-root {
   height: 100%;
-}
-
-.compose-album-output {
-  height: 58%;
   display: flex;
-  margin-bottom: 2%;
-  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
 }
 
-.compose-album-output-heading {
-  height: 5%;
-  margin-bottom: 1%;
-}
-
-.compose-album-output-box {
-  height: 94%;
+.ca-image-root-box {
+  width: 45%;
+  height: 40%;
   display: flex;
-  justify-content: space-between;
-}
-
-.compose-album-output-box-col {
-  width: 20%;
-  height: 100%;
   cursor: pointer;
 }
 
-.compose-album-output-box-col-select {
-  width: 20%;
-  height: 100%;
+.ca-image-root-box-selected {
+  width: 45%;
+  height: 40%;
+  display: flex;
   cursor: pointer;
-  border: 1px solid black;
+  border: 1px solid #455edd;
 }
 
 /*Compose bgmusic css*/
