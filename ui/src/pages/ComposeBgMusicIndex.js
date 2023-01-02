@@ -29,7 +29,7 @@ const ComposeBgMusicIndex = () => {
   const [bgMusicInfo, setBgMusicInfo] = useState({
     input: "",
     output: "",
-    measureCount: 0,
+    measureCount: 5,
     errorMessage: "",
     promptChoice: promptList[0],
   });
@@ -72,7 +72,7 @@ const ComposeBgMusicIndex = () => {
       if (data) {
         setBgMusicInfo({
           ...bgMusicInfo,
-          output: "../../../backend/"+data?.output_bg_music,
+          output: "../../../backend/" + data?.output_bg_music,
         });
       }
       setLoading(false);
@@ -177,9 +177,8 @@ const ComposeBgMusicIndex = () => {
                   <div className="cl-slider-root-left">
                     <div class="slidecontainer">
                       <input
-                        min="0"
-                        max="1.00"
-                        step="0.01"
+                        min="1"
+                        max="5"
                         type="range"
                         class="slider"
                         value={bgMusicInfo?.measureCount}
@@ -205,7 +204,20 @@ const ComposeBgMusicIndex = () => {
               </div>
             </div>
             <div className="cl-right-root">
-              <div className="cl-right-root-top"></div>
+              <div className="cl-right-root-top">
+                <div
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}
+                >
+                  <audio id="player" controls>
+                    <source type="audio/mp3" src={bgMusicInfo?.output} />
+                  </audio>
+                </div>
+              </div>
               <div className="cl-right-root-bottom">
                 <div
                   className="cl-right-root-bottom-copy"
