@@ -189,6 +189,7 @@
 .cl-right-root-bottom {
   height: 5%;
   display: flex;
+  justify-content: center;
 }
 
 .cl-right-root-bottom-copy {
@@ -301,11 +302,11 @@
 }
 
 /*Compose bgmusic css*/
-.compose-bgmusic-root {
+.cb-root {
   height: 100%;
 }
 
-.compose-bgmusic-root-inner {
+.cb-root-inner {
   padding: 2%;
   height: 100%;
   display: flex;

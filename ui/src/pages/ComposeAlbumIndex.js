@@ -328,7 +328,7 @@ const ComposeAlbumIndex = () => {
                   className="cl-right-root-bottom-copy"
                   onClick={() => handleDownloadAlbum()}
                 >
-                  <img src={DownloadIcon} alt="Copy" height="100%" />
+                  <img src={DownloadIcon} alt="Download" height="100%" />
                   {` Download`}
                 </div>
               </div>
