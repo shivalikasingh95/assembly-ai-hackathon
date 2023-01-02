@@ -6,11 +6,11 @@ const API_ROOT = "http://3.7.63.241/:8000/api/v1/";
 
 export const postLyric = (params) => {
   const data = {
-    genre: params?.genre?.name,
     text_prompt: params?.input,
     max_tokens: params?.maxLength,
     temperature: params?.temperature,
     frequency_penalty: params?.frequency,
+    genre: params?.genre?.toLowerCase(),
   };
   return axios
     .post(`${API_ROOT}lyrics/generate`, data)
@@ -33,8 +33,8 @@ export const postAlbumCover = (params) => {
     num_outputs: params?.imageCount,
     guidance_scale: params?.guidance,
     num_inference_steps: params?.inference,
-    image_width: params?.imageWeight?.name,
-    image_height: params?.imageHeight?.name,
+    image_width: params?.imageWeight,
+    image_height: params?.imageHeight,
     model_choice: params?.modelChoice?.name?.toLowerCase(),
   };
   return axios

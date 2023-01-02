@@ -198,6 +198,35 @@
   color: #465fde;
 }
 
+.cl-choice-root {
+  display: flex;
+  margin-bottom: 2vh;
+  justify-content: space-between;
+}
+
+.cl-choice-root-box {
+  width: 19%;
+  height: 4vh;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1px solid #eeeff4;
+}
+
+.cl-choice-root-box-selected {
+  width: 19%;
+  height: 4vh;
+  display: flex;
+  cursor: pointer;
+  color: #1b3ad6;
+  align-items: center;
+  justify-content: center;
+  background-color: #eceefc;
+  border: 1px solid #455edd;
+}
+
 .cl-error {
   color: orange;
   text-align: center;
@@ -215,6 +244,7 @@
   width: 30%;
   height: 4vh;
   display: flex;
+  cursor: pointer;
   align-items: center;
   justify-content: center;
   background-color: #ffffff;
@@ -225,11 +255,26 @@
   width: 30%;
   height: 4vh;
   display: flex;
+  cursor: pointer;
   color: #1b3ad6;
   align-items: center;
   justify-content: center;
   background-color: #eceefc;
   border: 1px solid #455edd;
+}
+
+.ca-imgpix-left {
+  width: 49%;
+  display: flex;
+  margin-right: 1%;
+  flex-direction: column;
+}
+
+.ca-imgpix-right {
+  width: 49%;
+  display: flex;
+  margin-left: 1%;
+  flex-direction: column;
 }
 
 .compose-album-input-heading {
