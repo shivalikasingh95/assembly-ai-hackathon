@@ -26,7 +26,7 @@ const ComposeLyricIndex = () => {
     temperature: 0,
     maxLength: 256,
     errorMessage: "",
-    genre: genreList[4],
+    genre: genreList[4]?.name,
   });
 
   const handleChangeLyricInfo = (key, val) => {
@@ -97,7 +97,7 @@ const ComposeLyricIndex = () => {
     }
   };
 
-  console.log("lyricsInfo", lyricsInfo);
+  // console.log("lyricsInfo", lyricsInfo);
 
   return (
     <div className="cl-root">
@@ -118,6 +118,27 @@ const ComposeLyricIndex = () => {
           <>
             <div className="cl-left-root">
               <div className="cl-page-title">Write lyrics</div>
+              <div className="cl-form-input-title">Genre</div>
+              <div className="cl-choice-root">
+                {genreList?.length > 0 &&
+                  genreList.map((glc, ind) => {
+                    return (
+                      <div
+                        key={ind}
+                        className={
+                          glc?.name === lyricsInfo?.genre
+                            ? "cl-choice-root-box-selected"
+                            : "cl-choice-root-box"
+                        }
+                        onClick={() =>
+                          handleChangeLyricInfo("genre", glc?.name)
+                        }
+                      >
+                        {glc?.name}
+                      </div>
+                    );
+                  })}
+              </div>
               <div className="cl-form-input-group">
                 <div className="cl-form-input-title">Prompt*</div>
                 <div className="cl-input-textarea-root">

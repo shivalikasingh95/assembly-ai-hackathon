@@ -30,8 +30,8 @@ const ComposeAlbumIndex = () => {
     imageCount: 1,
     errorMessage: "",
     modelChoice: modelList[0],
-    imageHeight: imagePixelList[2],
-    imageWeight: imagePixelList[2],
+    imageHeight: imagePixelList[2]?.name,
+    imageWeight: imagePixelList[2]?.name,
   });
 
   const handleChangeAlbumInfo = (key, val) => {
@@ -100,7 +100,7 @@ const ComposeAlbumIndex = () => {
     }
   };
 
-  console.log("albumInfo", albumInfo);
+  // console.log("albumInfo", albumInfo);
 
   return (
     <div className="cl-root">
@@ -121,6 +121,7 @@ const ComposeAlbumIndex = () => {
           <>
             <div className="cl-left-root">
               <div className="cl-page-title">Make album art</div>
+              <div className="cl-form-input-title">Model choice</div>
               <div className="ca-choice-root">
                 {modelList?.length > 0 &&
                   modelList.map((mlc, ind) => {
@@ -205,8 +206,46 @@ const ComposeAlbumIndex = () => {
                   </div>
                 </div>
               </div>
+              <div style={{ display: "flex" }} className="cl-form-input-group">
+                <div className="ca-imgpix-left">
+                  <div className="cl-form-input-title">Height</div>
+                  <div>
+                    <select
+                      value={albumInfo?.imageHeight}
+                      style={{ height: "4vh", width: "100%" }}
+                      onChange={(e) =>
+                        handleChangeAlbumInfo("imageHeight", e.target.value)
+                      }
+                    >
+                      {imagePixelList.map((optionVal) => (
+                        <option key={optionVal?.id} value={optionVal?.name}>
+                          {`${optionVal?.name} px`}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="ca-imgpix-right">
+                  <div className="cl-form-input-title">Width</div>
+                  <div>
+                    <select
+                      value={albumInfo?.imageWeight}
+                      style={{ height: "4vh", width: "100%" }}
+                      onChange={(e) =>
+                        handleChangeAlbumInfo("imageWeight", e.target.value)
+                      }
+                    >
+                      {imagePixelList.map((optionVal) => (
+                        <option key={optionVal?.id} value={optionVal?.name}>
+                          {`${optionVal?.name} px`}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
               <div className="cl-form-input-group">
-                <div className="cl-form-input-title">No.of.images</div>
+                <div className="cl-form-input-title">No.of images</div>
                 <div className="cl-form-input-subtitle">
                   Number of images you want to generate
                 </div>
@@ -238,11 +277,13 @@ const ComposeAlbumIndex = () => {
               </div>
             </div>
             <div className="cl-right-root">
-              <div className="cl-right-root-top">{albumInfo?.output}</div>
+              <div className="cl-right-root-top">
+                
+              </div>
               <div className="cl-right-root-bottom">
                 <div
                   className="cl-right-root-bottom-copy"
-                  // onClick={() => copyToClipboard(albumInfo?.output)}
+                  onClick={() => handleDownloadAlbum()}
                 >
                   <img src={DownloadIcon} alt="Copy" height="100%" />
                   {` Download`}
