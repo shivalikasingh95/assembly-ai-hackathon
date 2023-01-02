@@ -3,14 +3,35 @@ import { FadeLoader } from "react-spinners";
 
 import { postAlbumCover } from "../api/api";
 import { override } from "../api/apiLoading";
+import DownloadIcon from "../images/download.png";
+
+const modelList = [
+  { id: 1, name: "Default" },
+  { id: 2, name: "Replicate" },
+  { id: 3, name: "Custom" },
+];
+
+const imagePixelList = [
+  { id: 1, name: 128 },
+  { id: 2, name: 256 },
+  { id: 3, name: 512 },
+  { id: 4, name: 768 },
+  { id: 5, name: 1024 },
+];
 
 const ComposeAlbumIndex = () => {
   const [loading, setLoading] = useState(false);
   const [albumInfo, setAlbumInfo] = useState({
     input: "",
     output: [],
+    guidance: 1,
     download: "",
+    inference: 1,
+    imageCount: 1,
     errorMessage: "",
+    modelChoice: modelList[0],
+    imageHeight: imagePixelList[2],
+    imageWeight: imagePixelList[2],
   });
 
   const handleChangeAlbumInfo = (key, val) => {
@@ -79,11 +100,13 @@ const ComposeAlbumIndex = () => {
     }
   };
 
+  console.log("albumInfo", albumInfo);
+
   return (
-    <div className="compose-lyric-root">
-      <div className="compose-lyric-root-inner">
+    <div className="cl-root">
+      <div className="cl-root-inner">
         {loading ? (
-          <div className="compose-lyric-root-loading">
+          <div className="cl-root-loading">
             <FadeLoader
               width={5}
               radius={2}
@@ -96,62 +119,133 @@ const ComposeAlbumIndex = () => {
           </div>
         ) : (
           <>
-            <div className="compose-album-input">
-              <div className="compose-album-input-heading">
-                Album Cover Prompt*
-              </div>
-              <div className="compose-album-input-box">
-                <textarea
-                  value={albumInfo?.input}
-                  className="compose-album-textarea"
-                  onChange={(e) =>
-                    handleChangeAlbumInfo("input", e.target.value)
-                  }
-                />
-              </div>
-            </div>
-            <div className="compose-album-output">
-              <div className="compose-album-output-heading">
-                Album Cover Output
-              </div>
-              <div className="compose-album-output-box">
-                {albumInfo?.output?.length > 0 &&
-                  albumInfo.output.map((album, index) => {
+            <div className="cl-left-root">
+              <div className="cl-page-title">Make album art</div>
+              <div className="ca-choice-root">
+                {modelList?.length > 0 &&
+                  modelList.map((mlc, ind) => {
                     return (
                       <div
-                        key={index}
+                        key={ind}
                         className={
-                          albumInfo?.download === album
-                            ? "compose-album-output-box-col-select"
-                            : "compose-album-output-box-col"
+                          mlc?.name === albumInfo?.modelChoice?.name
+                            ? "ca-choice-root-box-selected"
+                            : "ca-choice-root-box"
                         }
-                        onClick={() => handleDownloadClick(album)}
+                        onClick={() =>
+                          handleChangeAlbumInfo("modelChoice", mlc)
+                        }
                       >
-                        <img src={album} width="100%" height="100%" />
+                        {mlc?.name}
                       </div>
                     );
                   })}
               </div>
-            </div>
-            <div className="compose-lyric-footer">
-              <div className="compose-lyric-footer-error-container">
-                {albumInfo?.errorMessage}
+              <div className="cl-form-input-group">
+                <div className="cl-form-input-title">Prompt*</div>
+                <div className="cl-input-textarea-root">
+                  <textarea
+                    value={albumInfo?.input}
+                    className="cl-input-textarea"
+                    onChange={(e) =>
+                      handleChangeAlbumInfo("input", e.target.value)
+                    }
+                    placeholder="E.g make an album art inspired by rock & grunge from 90s and early 2000s"
+                  />
+                </div>
               </div>
-              <div className="compose-lyric-footer-button-container">
-                {albumInfo?.output?.length > 0 ? (
-                  <div
-                    className="compose-lyric-button"
-                    onClick={() => handleDownloadAlbum()}
-                  >
-                    Download
+              <div className="cl-form-input-group">
+                <div className="cl-form-input-title">Guidance scale</div>
+                <div className="cl-form-input-subtitle">
+                  Decides how close the result matches the prompt
+                </div>
+                <div className="cl-slider-root">
+                  <div className="cl-slider-root-left">
+                    <div class="slidecontainer">
+                      <input
+                        min="1"
+                        max="20"
+                        step="0.01"
+                        type="range"
+                        class="slider"
+                        value={albumInfo?.guidance}
+                        onChange={(e) =>
+                          handleChangeAlbumInfo("guidance", e.target.value)
+                        }
+                      />
+                    </div>
                   </div>
-                ) : null}
+                  <div className="cl-slider-root-right">
+                    {albumInfo?.guidance}
+                  </div>
+                </div>
+              </div>
+              <div className="cl-form-input-group">
+                <div className="cl-form-input-title">Inference steps</div>
+                <div className="cl-form-input-subtitle">
+                  A line that describes this control
+                </div>
+                <div className="cl-slider-root">
+                  <div className="cl-slider-root-left">
+                    <div class="slidecontainer">
+                      <input
+                        min="0"
+                        max="500"
+                        type="range"
+                        class="slider"
+                        value={albumInfo?.inference}
+                        onChange={(e) =>
+                          handleChangeAlbumInfo("inference", e.target.value)
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="cl-slider-root-right">
+                    {albumInfo?.inference}
+                  </div>
+                </div>
+              </div>
+              <div className="cl-form-input-group">
+                <div className="cl-form-input-title">No.of.images</div>
+                <div className="cl-form-input-subtitle">
+                  Number of images you want to generate
+                </div>
+                <div className="cl-slider-root">
+                  <div className="cl-slider-root-left">
+                    <div class="slidecontainer">
+                      <input
+                        min="1"
+                        max="4"
+                        type="range"
+                        class="slider"
+                        value={albumInfo?.imageCount}
+                        onChange={(e) =>
+                          handleChangeAlbumInfo("imageCount", e.target.value)
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="cl-slider-root-right">
+                    {albumInfo?.imageCount}
+                  </div>
+                </div>
+              </div>
+              {albumInfo?.errorMessage ? (
+                <div className="cl-error">{albumInfo?.errorMessage}</div>
+              ) : null}
+              <div className="cl-submit" onClick={() => handleGenerateAlbum()}>
+                Generate
+              </div>
+            </div>
+            <div className="cl-right-root">
+              <div className="cl-right-root-top">{albumInfo?.output}</div>
+              <div className="cl-right-root-bottom">
                 <div
-                  style={{ marginLeft: "5%" }}
-                  className="compose-lyric-button"
-                  onClick={() => handleGenerateAlbum()}
+                  className="cl-right-root-bottom-copy"
+                  // onClick={() => copyToClipboard(albumInfo?.output)}
                 >
-                  Generate
+                  <img src={DownloadIcon} alt="Copy" height="100%" />
+                  {` Download`}
                 </div>
               </div>
             </div>

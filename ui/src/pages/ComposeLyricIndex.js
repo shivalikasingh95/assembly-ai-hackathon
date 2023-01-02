@@ -1,15 +1,32 @@
+import { toast } from "react-toastify";
 import React, { useState } from "react";
 import { FadeLoader } from "react-spinners";
 
 import { postLyric } from "../api/api";
+import CopyIcon from "../images/copy.png";
 import { override } from "../api/apiLoading";
+
+const genreList = [
+  { id: 1, name: "Pop" },
+  { id: 2, name: "Rap" },
+  { id: 3, name: "Rock" },
+  { id: 4, name: "Metal" },
+  { id: 5, name: "Generic" },
+];
+
+const COPY_SUCCESS = "Copied successfully!!!";
+const COPY_FAILURE = "Error occured during copying!!!";
 
 const ComposeLyricIndex = () => {
   const [loading, setLoading] = useState(false);
   const [lyricsInfo, setLyricsInfo] = useState({
     input: "",
     output: "",
+    frequency: 0,
+    temperature: 0,
+    maxLength: 256,
     errorMessage: "",
+    genre: genreList[4],
   });
 
   const handleChangeLyricInfo = (key, val) => {
@@ -43,22 +60,50 @@ const ComposeLyricIndex = () => {
     }
   };
 
-  const handleDownloadLyric = async () => {
-    const element = document.createElement("a");
-    const file = new Blob([lyricsInfo?.output], {
-      type: "text/plain;charset=utf-8",
-    });
-    element.href = URL.createObjectURL(file);
-    element.download = "output-lyric.txt";
-    document.body.appendChild(element);
-    element.click();
+  const copyToClipboard = async (textToCopy) => {
+    //navigator clipboard api needs a secure context (https)
+    if (navigator.clipboard && window.isSecureContext) {
+      // navigator clipboard api method'
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        toast.success(COPY_SUCCESS, { theme: "dark" });
+      } catch (err) {
+        toast.error(COPY_FAILURE, { theme: "dark" });
+      }
+    } else {
+      var textarea = document.createElement("textarea");
+      textarea.textContent = textToCopy;
+      document.body.appendChild(textarea);
+      // make the textarea out of viewport
+      textarea.style.position = "fixed";
+      textarea.style.left = "-999999px";
+      textarea.style.top = "-999999px";
+
+      var selection = document.getSelection();
+      var range = document.createRange();
+      //range.selectNodeContents(textarea);
+      range.selectNode(textarea);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      try {
+        document.execCommand("copy")
+          ? toast.success(COPY_SUCCESS, { theme: "dark" })
+          : toast.error(COPY_FAILURE, { theme: "dark" });
+      } catch (err) {
+        toast.error(COPY_FAILURE, { theme: "dark" });
+      }
+      selection.removeAllRanges();
+      document.body.removeChild(textarea);
+    }
   };
 
+  console.log("lyricsInfo", lyricsInfo);
+
   return (
-    <div className="compose-lyric-root">
-      <div className="compose-lyric-root-inner">
+    <div className="cl-root">
+      <div className="cl-root-inner">
         {loading ? (
-          <div className="compose-lyric-root-loading">
+          <div className="cl-root-loading">
             <FadeLoader
               width={5}
               radius={2}
@@ -71,47 +116,114 @@ const ComposeLyricIndex = () => {
           </div>
         ) : (
           <>
-            <div className="compose-lyric-input">
-              <div className="compose-lyric-input-heading">Lyrics Prompt*</div>
-              <div className="compose-lyric-input-box">
-                <textarea
-                  value={lyricsInfo?.input}
-                  className="compose-lyric-textarea-input"
-                  onChange={(e) =>
-                    handleChangeLyricInfo("input", e.target.value)
-                  }
-                />
+            <div className="cl-left-root">
+              <div className="cl-page-title">Write lyrics</div>
+              <div className="cl-form-input-group">
+                <div className="cl-form-input-title">Prompt*</div>
+                <div className="cl-input-textarea-root">
+                  <textarea
+                    value={lyricsInfo?.input}
+                    className="cl-input-textarea"
+                    onChange={(e) =>
+                      handleChangeLyricInfo("input", e.target.value)
+                    }
+                    placeholder="E.g write a song like Drake about how sad it is when last doughnut is a bit sour"
+                  />
+                </div>
               </div>
-            </div>
-            <div className="compose-lyric-output">
-              <div className="compose-lyric-output-heading">Lyrics Output</div>
-              <div className="compose-lyric-output-box">
-                <textarea
-                  disabled={true}
-                  value={lyricsInfo?.output}
-                  className="compose-lyric-textarea-output"
-                />
-              </div>
-            </div>
-            <div className="compose-lyric-footer">
-              <div className="compose-lyric-footer-error-container">
-                {lyricsInfo?.errorMessage}
-              </div>
-              <div className="compose-lyric-footer-button-container">
-                {lyricsInfo?.output ? (
-                  <div
-                    className="compose-lyric-button"
-                    onClick={() => handleDownloadLyric()}
-                  >
-                    Download
+              <div className="cl-form-input-group">
+                <div className="cl-form-input-title">Max length</div>
+                <div className="cl-form-input-subtitle">
+                  Number of characters you want
+                </div>
+                <div className="cl-slider-root">
+                  <div className="cl-slider-root-left">
+                    <div class="slidecontainer">
+                      <input
+                        min="1"
+                        max="4000"
+                        type="range"
+                        class="slider"
+                        value={lyricsInfo?.maxLength}
+                        onChange={(e) =>
+                          handleChangeLyricInfo("maxLength", e.target.value)
+                        }
+                      />
+                    </div>
                   </div>
-                ) : null}
+                  <div className="cl-slider-root-right">
+                    {lyricsInfo?.maxLength}
+                  </div>
+                </div>
+              </div>
+              <div className="cl-form-input-group">
+                <div className="cl-form-input-title">Temperature</div>
+                <div className="cl-form-input-subtitle">
+                  Set higher values for more randomness
+                </div>
+                <div className="cl-slider-root">
+                  <div className="cl-slider-root-left">
+                    <div class="slidecontainer">
+                      <input
+                        min="0"
+                        max="1.00"
+                        step="0.01"
+                        type="range"
+                        class="slider"
+                        value={lyricsInfo?.temperature}
+                        onChange={(e) =>
+                          handleChangeLyricInfo("temperature", e.target.value)
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="cl-slider-root-right">
+                    {lyricsInfo?.temperature}
+                  </div>
+                </div>
+              </div>
+              <div className="cl-form-input-group">
+                <div className="cl-form-input-title">Frequency penalty</div>
+                <div className="cl-form-input-subtitle">
+                  Set higher values to increase likelihood of repeating lines
+                </div>
+                <div className="cl-slider-root">
+                  <div className="cl-slider-root-left">
+                    <div class="slidecontainer">
+                      <input
+                        min="0"
+                        max="2.00"
+                        step="0.01"
+                        type="range"
+                        class="slider"
+                        value={lyricsInfo?.frequency}
+                        onChange={(e) =>
+                          handleChangeLyricInfo("frequency", e.target.value)
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="cl-slider-root-right">
+                    {lyricsInfo?.frequency}
+                  </div>
+                </div>
+              </div>
+              {lyricsInfo?.errorMessage ? (
+                <div className="cl-error">{lyricsInfo?.errorMessage}</div>
+              ) : null}
+              <div className="cl-submit" onClick={() => handleGenerateLyic()}>
+                Generate
+              </div>
+            </div>
+            <div className="cl-right-root">
+              <div className="cl-right-root-top">{lyricsInfo?.output}</div>
+              <div className="cl-right-root-bottom">
                 <div
-                  style={{ marginLeft: "5%" }}
-                  className="compose-lyric-button"
-                  onClick={() => handleGenerateLyic()}
+                  className="cl-right-root-bottom-copy"
+                  onClick={() => copyToClipboard(lyricsInfo?.output)}
                 >
-                  Generate
+                  <img src={CopyIcon} alt="Copy" height="100%" />
+                  {` Copy`}
                 </div>
               </div>
             </div>
