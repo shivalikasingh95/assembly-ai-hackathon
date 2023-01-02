@@ -6,8 +6,9 @@ import {
   BrowserRouter as Router,
 } from "react-router-dom";
 
+// Layout import
 import AppHeader from "./components/AppHeader";
-// Page / route import
+// Page/route import
 import DashboardIndex from "./pages/DashboardIndex";
 import ComposeLyricIndex from "./pages/ComposeLyricIndex";
 import ComposeAlbumIndex from "./pages/ComposeAlbumIndex";

@@ -61,97 +61,21 @@
 }
 
 /*Compose lyric css*/
-.compose-lyric-root {
+.cl-root {
   height: 100%;
+  box-sizing: border-box;
+  background-color: #f1f3fa;
 }
 
-.compose-lyric-root-inner {
+.cl-root-inner {
   padding: 2%;
-  height: 100%;
+  /* height: 100%; */
   display: flex;
   box-sizing: border-box;
-  flex-direction: column;
-}
-
-.compose-lyric-input {
-  height: 28%;
-  display: flex;
-  margin-bottom: 2%;
-  flex-direction: column;
-}
-
-.compose-lyric-input-heading {
-  height: 5%;
-  margin-bottom: 1%;
-}
-
-.compose-lyric-input-box {
-  height: 94%;
-}
-
-.compose-lyric-output {
-  height: 58%;
-  display: flex;
-  margin-bottom: 2%;
-  flex-direction: column;
-}
-
-.compose-lyric-output-heading {
-  height: 5%;
-  margin-bottom: 1%;
-}
-
-.compose-lyric-output-box {
-  height: 94%;
-}
-
-.compose-lyric-footer {
-  height: 6%;
-  display: flex;
-}
-
-.compose-lyric-footer-error-container {
-  width: 50%;
-  display: flex;
-  color: #ed6c02;
-  align-items: center;
-}
-
-.compose-lyric-footer-button-container {
-  width: 50%;
-  display: flex;
-  justify-content: end;
-}
-
-.compose-lyric-textarea-input {
-  width: 50%;
-  resize: none;
-  height: 100%;
-}
-
-.compose-lyric-textarea-output {
-  width: 100%;
-  resize: none;
-  height: 100%;
-}
-
-.compose-lyric-button {
-  width: 20%;
-  height: 100%;
-  display: flex;
-  cursor: pointer;
-  color: #ffffff;
-  border-radius: 500px;
-  align-items: center;
   justify-content: center;
-  background-color: #000000;
 }
 
-.compose-lyric-button:hover {
-  transform: scale(1.04);
-}
-
-.compose-lyric-root-loading {
+.cl-root-loading {
   padding: 2%;
   height: 100%;
   display: flex;
@@ -160,12 +84,152 @@
  justify-content: center;
 }
 
-/*Compose album css*/
-.compose-album-input {
-  height: 28%;
+.cl-left-root {
+  width: 35%;
+  /* height: 100%; */
   display: flex;
-  margin-bottom: 2%;
+  margin-right: 2%;
   flex-direction: column;
+}
+
+.cl-right-root {
+  width: 35%;
+  padding: 1%;
+  /* height: 100%; */
+  display: flex;
+  margin-left: 2%;
+  border-radius: 15px;
+  flex-direction: column;
+  background-color: #ffffff;
+}
+
+.cl-page-title {
+  font-size: 24px;
+  color: #2e2f49;
+  font-weight: bold;
+  margin-bottom: 3vh;
+}
+
+.cl-form-input-group {
+  margin-bottom: 2vh;
+}
+
+.cl-form-input-title {
+  color: #656a84;
+  font-weight: bold;
+  margin-bottom: 1vh;
+}
+
+.cl-form-input-subtitle{
+  font-size: 12px;
+  color: #a0a3b2;
+  margin-bottom: 1vh;
+}
+
+.cl-input-textarea-root {
+  width: 100%;
+  height: 10vh;
+}
+
+.cl-input-textarea {
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  resize: none;
+  color: #999cad;
+  border-radius: 5px;
+}
+
+.cl-submit {
+  width: 100%;
+  height: 5vh;
+  display: flex;
+  cursor: pointer;
+  color: #ffffff;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
+  background-color: #0d2ed3;
+}
+
+.cl-submit:hover {
+  transform: scale(1.04);
+}
+
+.cl-slider-root {
+  width: 100%;
+  display: flex;
+}
+
+.cl-slider-root-left {
+  width: 88%;
+  display: flex;
+  margin-right: 2%;
+  align-items: center;
+  justify-content: center;
+}
+
+.cl-slider-root-right {
+  width: 10%;
+  height: 3vh;
+  display: flex;
+  color: #777b93;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
+  background-color: #e9eaf0;
+}
+
+.cl-right-root-top {
+  height: 95%;
+  color: #484962;
+  overflow-y: auto;
+}
+
+.cl-right-root-bottom {
+  height: 5%;
+  display: flex;
+}
+
+.cl-right-root-bottom-copy {
+  display: flex;
+  cursor: pointer;
+  align-items: end;
+  color: #465fde;
+}
+
+.cl-error {
+  color: orange;
+  text-align: center;
+  margin-bottom: 1vh;
+}
+
+/*Compose album css*/
+.ca-choice-root {
+  display: flex;
+  margin-bottom: 2vh;
+  justify-content: space-between;
+}
+
+.ca-choice-root-box {
+  width: 30%;
+  height: 4vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1px solid #eeeff4;
+}
+
+.ca-choice-root-box-selected {
+  width: 30%;
+  height: 4vh;
+  display: flex;
+  color: #1b3ad6;
+  align-items: center;
+  justify-content: center;
+  background-color: #eceefc;
+  border: 1px solid #455edd;
 }
 
 .compose-album-input-heading {
@@ -246,4 +310,44 @@
 
 .compose-bgmusic-heading {
   margin-bottom: 1%;
+}
+
+/*Slider css*/
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  
+  width: 100%;
+  height: 10px;
+  opacity: 0.7;
+  outline: none;
+  border-radius: 5px;
+  background: #d3d3d3;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  -webkit-appearance: none;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  appearance: none;
+  border-radius: 50%;
+  background: #0d2ed3;
+  -webkit-appearance: none;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  border-radius: 50%;
+  background: #0d2ed3;
 }

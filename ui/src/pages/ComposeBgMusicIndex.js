@@ -94,6 +94,8 @@ const ComposeBgMusicIndex = () => {
     }
   };
 
+  console.log("", bgMusicInfo);
+
   return (
     <div className="compose-bgmusic-root">
       <div className="compose-bgmusic-root-inner">
