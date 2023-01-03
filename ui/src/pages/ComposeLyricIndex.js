@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { FadeLoader } from "react-spinners";
 
 import { postLyric } from "../api/api";
-import CopyIcon from "../images/copy.png";
+import CopyIcon from "../images/copy.svg";
 import { override } from "../api/apiLoading";
 
 const genreList = [
@@ -155,7 +155,7 @@ const ComposeLyricIndex = () => {
               <div className="cl-form-input-group">
                 <div className="cl-form-input-title">Max length</div>
                 <div className="cl-form-input-subtitle">
-                  Number of characters you want
+                  The maximum number of tokens to generate
                 </div>
                 <div className="cl-slider-root">
                   <div className="cl-slider-root-left">

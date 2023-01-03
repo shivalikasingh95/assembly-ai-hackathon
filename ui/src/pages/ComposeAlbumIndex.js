@@ -3,7 +3,7 @@ import { FadeLoader } from "react-spinners";
 
 import { postAlbumCover } from "../api/api";
 import { override } from "../api/apiLoading";
-import DownloadIcon from "../images/download.png";
+import DownloadIcon from "../images/download.svg";
 
 const modelList = [
   { id: 1, name: "Default" },
@@ -151,7 +151,13 @@ const ComposeAlbumIndex = () => {
                     onChange={(e) =>
                       handleChangeAlbumInfo("input", e.target.value)
                     }
-                    placeholder="E.g make an album art inspired by rock & grunge from 90s and early 2000s"
+                    placeholder={
+                      albumInfo?.modelChoice?.id === 1
+                        ? "E.g portrait of Bob Dylan singing, colourful background, highly detailed, smooth, sharp focus, 8k"
+                        : albumInfo?.modelChoice?.id === 2
+                        ? "E.g portrait of Taylor Swift, intricate, elegant, highly detailed, digital painting, artstation, concept art, smooth, sharp focus, illustration, art by artgerm and greg rutkowski and alphonse mucha, 8k"
+                        : "E.g picture of sks pink floyd division bell album cover on a starry night sky on mars"
+                    }
                   />
                 </div>
               </div>
@@ -184,7 +190,7 @@ const ComposeAlbumIndex = () => {
               <div className="cl-form-input-group">
                 <div className="cl-form-input-title">Inference steps</div>
                 <div className="cl-form-input-subtitle">
-                  A line that describes this control
+                  Set higher values to generate slow but higher quality images
                 </div>
                 <div className="cl-slider-root">
                   <div className="cl-slider-root-left">
@@ -212,7 +218,12 @@ const ComposeAlbumIndex = () => {
                   <div>
                     <select
                       value={albumInfo?.imageHeight}
-                      style={{ height: "4vh", width: "100%" }}
+                      style={{
+                        height: "4vh",
+                        width: "100%",
+                        backgroundColor: "#ffffff",
+                        border: "1px solid #eeeff4",
+                      }}
                       onChange={(e) =>
                         handleChangeAlbumInfo("imageHeight", e.target.value)
                       }
@@ -230,7 +241,12 @@ const ComposeAlbumIndex = () => {
                   <div>
                     <select
                       value={albumInfo?.imageWeight}
-                      style={{ height: "4vh", width: "100%" }}
+                      style={{
+                        height: "4vh",
+                        width: "100%",
+                        backgroundColor: "#ffffff",
+                        border: "1px solid #eeeff4",
+                      }}
                       onChange={(e) =>
                         handleChangeAlbumInfo("imageWeight", e.target.value)
                       }
@@ -245,7 +261,7 @@ const ComposeAlbumIndex = () => {
                 </div>
               </div>
               <div className="cl-form-input-group">
-                <div className="cl-form-input-title">No.of images</div>
+                <div className="cl-form-input-title">No. of images</div>
                 <div className="cl-form-input-subtitle">
                   Number of images you want to generate
                 </div>
