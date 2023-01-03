@@ -3,10 +3,10 @@ import { FadeLoader } from "react-spinners";
 
 import { postBgMusic } from "../api/api";
 import { override } from "../api/apiLoading";
-import DownloadIcon from "../images/download.png";
+import DownloadIcon from "../images/download.svg";
 
 const promptList = [
-  { id: 1, name: "Input audio" },
+  { id: 1, name: "Upload audio" },
   { id: 2, name: "Select an example" },
 ];
 
@@ -104,7 +104,7 @@ const ComposeBgMusicIndex = () => {
     }
   };
 
-  console.log("bgMusicInfo", bgMusicInfo);
+  // console.log("bgMusicInfo", bgMusicInfo);
 
   return (
     <div className="cl-root">
@@ -125,53 +125,69 @@ const ComposeBgMusicIndex = () => {
           <>
             <div className="cl-left-root">
               <div className="cl-page-title">Create music</div>
-              <div className="cl-form-input-title">Prompt choice</div>
-              <div className="ca-choice-root">
-                {promptList?.length > 0 &&
-                  promptList.map((plc, ind) => {
-                    return (
-                      <div
-                        key={ind}
-                        className={
-                          plc?.name === bgMusicInfo?.promptChoice?.name
-                            ? "ca-choice-root-box-selected"
-                            : "ca-choice-root-box"
-                        }
-                        onClick={() => handleChangeBgInfo("promptChoice", plc)}
-                      >
-                        {plc?.name}
-                      </div>
-                    );
-                  })}
-              </div>
-              {bgMusicInfo?.promptChoice?.id === 2 ? (
-                <div className="cl-form-input-group">
-                  <select
-                    value={bgMusicInfo?.input}
-                    style={{ height: "4vh", width: "100%" }}
-                    onChange={(e) =>
-                      handleChangeBgInfo("input", e.target.value)
-                    }
-                  >
-                    <option disabled value="">
-                      Select an option
-                    </option>
-                    {exampleList.map((optionVal) => (
-                      <option key={optionVal?.label} value={optionVal?.value}>
-                        {optionVal?.label}
+              <div
+                style={{
+                  padding: "2%",
+                  borderRadius: "10px",
+                  marginBottom: "2vh",
+                  backgroundColor: "#ffffff",
+                }}
+              >
+                <div className="cl-form-input-title">Input audio</div>
+                <div className="ca-choice-root">
+                  {promptList?.length > 0 &&
+                    promptList.map((plc, ind) => {
+                      return (
+                        <div
+                          key={ind}
+                          className={
+                            plc?.name === bgMusicInfo?.promptChoice?.name
+                              ? "ca-choice-root-box-selected"
+                              : "ca-choice-root-box"
+                          }
+                          onClick={() =>
+                            handleChangeBgInfo("promptChoice", plc)
+                          }
+                        >
+                          {plc?.name}
+                        </div>
+                      );
+                    })}
+                </div>
+                {bgMusicInfo?.promptChoice?.id === 2 ? (
+                  <div className="cl-form-input-group">
+                    <select
+                      value={bgMusicInfo?.input}
+                      style={{
+                        height: "4vh",
+                        width: "100%",
+                        backgroundColor: "#ffffff",
+                        border: "1px solid #eeeff4",
+                      }}
+                      onChange={(e) =>
+                        handleChangeBgInfo("input", e.target.value)
+                      }
+                    >
+                      <option disabled value="">
+                        Select an option
                       </option>
-                    ))}
-                  </select>
-                </div>
-              ) : (
-                <div className="cl-form-input-group">
-                  <input type="file" onChange={onFileChange} />
-                </div>
-              )}
+                      {exampleList.map((optionVal) => (
+                        <option key={optionVal?.label} value={optionVal?.value}>
+                          {optionVal?.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  <div className="cl-form-input-group">
+                    <input type="file" onChange={onFileChange} />
+                  </div>
+                )}
+              </div>
               <div className="cl-form-input-group">
                 <div className="cl-form-input-title">Measure count</div>
                 <div className="cl-form-input-subtitle">
-                  Line that describe what this slider does
+                  How many measures of chords you want to keep
                 </div>
                 <div className="cl-slider-root">
                   <div className="cl-slider-root-left">
@@ -210,7 +226,7 @@ const ComposeBgMusicIndex = () => {
                     height: "100%",
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center"
+                    justifyContent: "center",
                   }}
                 >
                   <audio id="player" controls>

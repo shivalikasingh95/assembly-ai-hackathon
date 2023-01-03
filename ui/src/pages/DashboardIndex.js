@@ -19,9 +19,10 @@ const dashboardMenus = [
   },
   {
     link: "/compose-bgmusic",
-    text: "Compose Background Music.",
+    text: "Compose Music.",
     image: "https://i.scdn.co/image/ab671c3d0000f430eb43023b5332389f5094530d",
-    description: "Experiencing a creative block? We have a fix for that too. Let us help you compose your tunes.",
+    description:
+      "Experiencing a creative block? We have a fix for that too. Let us help you compose your tunes.",
   },
 ];
 
