@@ -4,6 +4,7 @@ import { FadeLoader } from "react-spinners";
 import { postAlbumCover } from "../api/api";
 import { override } from "../api/apiLoading";
 import DownloadIcon from "../images/download.svg";
+import SkeletonLoadingAlbum from "../components/skeletonLoadingAlbum";
 
 const modelList = [
   { id: 1, name: "Default" },
@@ -294,7 +295,12 @@ const ComposeAlbumIndex = () => {
             </div>
             <div className="cl-right-root">
               <div className="cl-right-root-top">
-                {albumInfo?.output?.length === 0 && null}
+                {albumInfo?.output?.length === 0 && (
+                  <>
+                    <SkeletonLoadingAlbum />
+                  </>
+                )}
+                {/* {albumInfo?.output?.length === 0 && null} */}
                 {albumInfo?.output?.length === 1 && (
                   <div
                     style={{
