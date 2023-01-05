@@ -5,6 +5,7 @@ import { FadeLoader } from "react-spinners";
 import { postLyric } from "../api/api";
 import CopyIcon from "../images/copy.svg";
 import { override } from "../api/apiLoading";
+import SkeletonLoading from "../components/skeletonLoading";
 
 const genreList = [
   { id: 1, name: "Pop" },
@@ -237,7 +238,18 @@ const ComposeLyricIndex = () => {
               </div>
             </div>
             <div className="cl-right-root">
-              <div className="cl-right-root-top">{lyricsInfo?.output}</div>
+              <div className="cl-right-root-top">
+                {lyricsInfo?.output ? (
+                  <>{lyricsInfo?.output}</>
+                ) : (
+                  <>
+                    <SkeletonLoading />
+                    <SkeletonLoading />
+                    <SkeletonLoading />
+                    <SkeletonLoading />
+                  </>
+                )}
+              </div>
               <div className="cl-right-root-bottom">
                 <div
                   className="cl-right-root-bottom-copy"

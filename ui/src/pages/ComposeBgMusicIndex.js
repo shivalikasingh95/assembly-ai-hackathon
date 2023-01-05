@@ -4,6 +4,7 @@ import { FadeLoader } from "react-spinners";
 import { postBgMusic } from "../api/api";
 import { override } from "../api/apiLoading";
 import DownloadIcon from "../images/download.svg";
+import SkeletonLoading from "../components/skeletonLoading";
 
 const promptList = [
   { id: 1, name: "Upload audio" },
@@ -224,14 +225,20 @@ const ComposeBgMusicIndex = () => {
                 <div
                   style={{
                     height: "100%",
-                    display: "flex",
+                    display: bgMusicInfo?.output ? "flex" : "block",
                     alignItems: "center",
                     justifyContent: "center",
                   }}
                 >
-                  <audio id="player" controls>
-                    <source type="audio/mp3" src={bgMusicInfo?.output} />
-                  </audio>
+                  {bgMusicInfo?.output ? (
+                    <audio id="player" controls>
+                      <source type="audio/mp3" src={bgMusicInfo?.output} />
+                    </audio>
+                  ) : (
+                    <>
+                      <SkeletonLoading />
+                    </>
+                  )}
                 </div>
               </div>
               <div className="cl-right-root-bottom">
