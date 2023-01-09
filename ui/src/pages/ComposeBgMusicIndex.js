@@ -6,12 +6,17 @@ import { override } from "../api/apiLoading";
 import DownloadIcon from "../images/download.svg";
 import SkeletonLoading from "../components/skeletonLoading";
 
-const promptList = [
+const inputAudioChoiceList = [
   { id: 1, name: "Upload audio" },
   { id: 2, name: "Select an example" },
 ];
 
 const exampleList = [
+  {
+    label: "bach.mid",
+    value:
+      "bach.mid",
+  },
   {
     label: "https://assemblyai-hackathon.s3.ap-south-1.amazonaws.com/bach.mp3",
     value:
@@ -32,11 +37,11 @@ const ComposeBgMusicIndex = () => {
     output: "",
     measureCount: 5,
     errorMessage: "",
-    promptChoice: promptList[0],
+    inputAudioOption: inputAudioChoiceList[0],
   });
 
   const handleChangeBgInfo = (key, val) => {
-    if (key === "promptChoice") {
+    if (key === "inputAudioOption") {
       setBgMusicInfo({
         ...bgMusicInfo,
         input: "",
@@ -136,18 +141,18 @@ const ComposeBgMusicIndex = () => {
               >
                 <div className="cl-form-input-title">Input audio</div>
                 <div className="ca-choice-root">
-                  {promptList?.length > 0 &&
-                    promptList.map((plc, ind) => {
+                  {inputAudioChoiceList?.length > 0 &&
+                    inputAudioChoiceList.map((plc, ind) => {
                       return (
                         <div
                           key={ind}
                           className={
-                            plc?.name === bgMusicInfo?.promptChoice?.name
+                            plc?.name === bgMusicInfo?.inputAudioOption?.name
                               ? "ca-choice-root-box-selected"
                               : "ca-choice-root-box"
                           }
                           onClick={() =>
-                            handleChangeBgInfo("promptChoice", plc)
+                            handleChangeBgInfo("inputAudioOption", plc)
                           }
                         >
                           {plc?.name}
@@ -155,7 +160,7 @@ const ComposeBgMusicIndex = () => {
                       );
                     })}
                 </div>
-                {bgMusicInfo?.promptChoice?.id === 2 ? (
+                {bgMusicInfo?.inputAudioOption?.id === 2 ? (
                   <div className="cl-form-input-group">
                     <select
                       value={bgMusicInfo?.input}

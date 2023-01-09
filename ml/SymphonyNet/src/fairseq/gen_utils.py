@@ -69,9 +69,9 @@ music_dict = Dictionary()
 prime_chords = None
 prime_mea_idx = 0
 
-def process_prime_midi(prime_midi_path, max_measures, max_chord_measures, perm_inv = PI_LEVEL, ratio=RATIO, sample_len_max=MAX_POS_LEN):
+def process_prime_midi(prime_midi_path, prime_midi_contents, max_measures, max_chord_measures, perm_inv = PI_LEVEL, ratio=RATIO, sample_len_max=MAX_POS_LEN):
 
-    toks = midi_to_event_seq_str(prime_midi_path, readonly=True)
+    toks = midi_to_event_seq_str(prime_midi_path, prime_midi_contents, readonly=True)
     if music_dict.merges is not None:
         toks = apply_bpe_for_sentence(toks, music_dict.merges, music_dict.merged_vocs, {})
 

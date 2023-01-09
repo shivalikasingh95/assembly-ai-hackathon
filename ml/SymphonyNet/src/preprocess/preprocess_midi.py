@@ -7,7 +7,7 @@ from miditoolkit.midi.parser import MidiFile
 from miditoolkit.midi.containers import Instrument
 from miditoolkit.midi.containers import Note as mtkNote
 from chorder import Dechorder
-
+import io
 import sys, os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -402,8 +402,13 @@ def event_seq_to_str(new_event_seq):
 
 
 # abs_pos type pitch program is_drum track_id duration/rela_pos
-def midi_to_event_seq_str(midi_file_path, readonly=False):
-    p_midi = MidiFile(midi_file_path)
+def midi_to_event_seq_str(midi_file_path, file_contents=None, readonly=False):
+    if midi_file_path is not None:
+        p_midi = MidiFile(midi_file_path)
+    else:
+        p_midi = MidiFile(file=io.BytesIO(file_contents))
+
+    print("type midi file:", type(p_midi))
     for ins in p_midi.instruments:
         ins.remove_invalid_notes(verbose=False)
 

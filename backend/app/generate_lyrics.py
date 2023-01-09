@@ -35,7 +35,7 @@ def generate_song_lyrics(inputs, config: dict):
     temperature = inputs.temperature
   
   # prepare prompt text
-  prompt_text = f"Prompt:{inputs['text']}\n\nArtist:{artist}\n\nLyrics:\n"
+  prompt_text = f"Prompt:{inputs.text_prompt}\n\nArtist:{artist}\n\nLyrics:\n"
   print(prompt_text)
   
   ## get model prediction

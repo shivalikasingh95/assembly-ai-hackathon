@@ -20,7 +20,7 @@ class cover_art_input(BaseModel):
     num_inference_steps: Optional[int] = 50
 
     # Scale for classifier-free guidance. Minimum value = 1, Max value = 20.
-    guidance_scale: Optional[int] = 7
+    guidance_scale: Optional[float] = 7
 
     # Number of images to output
     num_outputs: Optional[int] = 1
@@ -32,24 +32,24 @@ class lyrics_input(BaseModel):
     text_prompt: str
 
     # genre of music
-    genre: Optional[str] = "common"
+    genre: Optional[str] = "generic"
 
     ## temperature for GPT3 model - helps in deciding how the model chooses from its next choice of tokens.
     ## Low temp -> produces more predictable output. High temp -> produces more creative output
-    temperature: Optional[int] = None
+    temperature: Optional[float] = None
 
     ## max_tokens to output for lyrics generation model (GPT3)
     max_tokens: Optional[int] = None
 
     ## frequency_penalty for lyrics generation model (GPT3)
-    frequency_penalty: Optional[int] = None
+    frequency_penalty: Optional[float] = None
 
 
 class music_gen_input(BaseModel):
 
     ## set how many measures of chords from the MIDI file you may want to keep - 
     ## output will be conditioned on first `prime_measure_count` of MIDI file
-    prime_measure_count: int = 5
+    prime_measure_count: Optional[int] = 5
 
     ## if you want to put constraints of chord progression
-    prime_chord_count: int = 0
+    # prime_chord_count: int = 0

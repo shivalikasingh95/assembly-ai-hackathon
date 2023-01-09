@@ -54,7 +54,7 @@ const ComposeAlbumIndex = () => {
       if (data) {
         setAlbumInfo({
           ...albumInfo,
-          output: data?.output_album,
+          output: data?.generated_cover_art,
         });
       }
       setLoading(false);

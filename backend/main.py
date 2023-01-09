@@ -87,14 +87,17 @@ def generate_cover_art(cover_art_inputs: cover_art_input):
             img_urls_list,base64_list = generate_cover_art_HF(album_art_config, cover_art_inputs)
             response = {"generated_cover_art": img_urls_list, "encoded_imgs": base64_list} #output_album
 
+        response = JSONResponse(response, status_code=201)
+        response.headers['Access-Control-Allow-Origin']= "*"
+
     except Exception as e:
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
-    return JSONResponse(response, status_code=201)
+    return response
 
-@app.post("/api/v1/music/generate") #bg_music_file_input
-def generate_bg_music(example_file_name: Optional[str], file: UploadFile = File(...)):
+@app.post("/api/v1/music/upload/generate") #bg_music_file_input
+def upload_audio_generate_music(audiofile: UploadFile = File(...), prime_measure_count: int = 5):
     """
     Route for generating music note sequence based on user input audio sequence
     
@@ -105,16 +108,16 @@ def generate_bg_music(example_file_name: Optional[str], file: UploadFile = File(
         response (str): 
     """
     bg_music_config = config["bg_music"]
-    midi_file_path = "input_audio/"+ file.filename
+    print("prime_measure_count:", prime_measure_count)
+    bg_music_config['prime_measure_count'] = prime_measure_count
+
+    midi_file_contents = audiofile.file.read()
+    print("contents type:", type(midi_file_contents))
 
     try:
-        if not os.path.exists(midi_file_path):
-            midi_file_path = download_file_from_s3(bg_music_config["s3_bucket_name"], midi_file_path)
-        
-        # midi_file_path = "examples/"+file.filename
-
-        mp3_output_path = generate_music(bg_music_config, midi_file_path)
+        mp3_output_path = generate_music(bg_music_config, midi_file_contents)
         response = {"output_bg_music": mp3_output_path}
+
     except Exception as e:
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
@@ -122,7 +125,34 @@ def generate_bg_music(example_file_name: Optional[str], file: UploadFile = File(
     return JSONResponse(response, status_code=201)
 
 
+@app.post("/api/v1/music/example/generate") #bg_music_file_input
+def use_example_generate_music(audiofile: str = "bach.mid", prime_measure_count: Optional[int] = 5):
+    """
+    Route for generating music note sequence based on user input audio sequence
+    
+    Args:
+        example_file_name (str): Example audio file path 
+    
+    Returns:
+        response (str): 
+    """
+    bg_music_config = config["bg_music"]
+    print("prime_measure_count:", prime_measure_count)
+    bg_music_config['prime_measure_count'] = prime_measure_count
 
+    midi_file_path = "examples/"+ audiofile
+
+    try:
+        if not os.path.exists(midi_file_path):
+            midi_file_path = download_file_from_s3(bg_music_config["s3_bucket_name"], midi_file_path)
+        
+        mp3_output_path = generate_music(bg_music_config, midi_file_path=midi_file_path)
+        response = {"output_bg_music": mp3_output_path}
+    except Exception as e:
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+    return JSONResponse(response, status_code=201)
     
      
 

@@ -13,7 +13,7 @@ from SymphonyNet.src.fairseq.gen_utils import (
 )
 from fairseq.models import FairseqLanguageModel
 
-def generate_music(config: dict, midi_file_path: str):
+def generate_music(config: dict, midi_file_contents=None, midi_file_path: str = None):
     """
     This function calls the SymphonyNet model & generates the output music corresponding to given input midi file.
     Args:
@@ -52,9 +52,9 @@ def generate_music(config: dict, midi_file_path: str):
     music_gen_model.eval()
 
     ## preprocess input midi file before feeding to model for prediction
-    max_measure_cnt = config["max_measure_cnt"]
+    max_measure_cnt = config["prime_measure_count"]
     max_chord_measure_cnt = config["max_chord_measure_cnt"]
-    prime, ins_label = process_prime_midi(midi_file_path, max_measure_cnt, max_chord_measure_cnt)
+    prime, ins_label = process_prime_midi(midi_file_path, midi_file_contents, max_measure_cnt, max_chord_measure_cnt)
     
     ## generate note sequence output using SymphonyNet model
     while (True):
@@ -78,7 +78,7 @@ def generate_music(config: dict, midi_file_path: str):
     convert_midi_to_mp3(config["sound_font_file_path"], midi_output_path, mp3_output_path, config['sampling_rate'])
 
     ## upload mp3 file to s3
-    upload_file_to_s3(mp3_output_path, config['s3_bucket_name'])
+    # upload_file_to_s3(mp3_output_path, config['s3_bucket_name'])
 
     if config["delete_audio_files"]:
         ## delete local audio files after uploading to S3

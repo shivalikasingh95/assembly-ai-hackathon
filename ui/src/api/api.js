@@ -2,7 +2,7 @@ import axios from "axios";
 import MESSAGE from "./apiMessage";
 import { toast } from "react-toastify";
 
-const API_ROOT = "http://3.7.63.241/:8000/api/v1/";
+const API_ROOT = "http://localhost:8001/api/v1/";
 
 export const postLyric = (params) => {
   const data = {
@@ -66,7 +66,8 @@ export const postBgMusic = (params) => {
     };
   } else {
     data = new FormData();
-    data.append('file', params?.input);
+    data.append('prime_measure_count', params?.measureCount);
+    data.append('audiofile', params?.input);
     data.append('fileName', params?.input?.name);
     config = {
       headers: {
@@ -75,7 +76,7 @@ export const postBgMusic = (params) => {
     };
   }
   return axios
-    .post(`${API_ROOT}${params?.type === "s3" ? "bg_music" : "bg_music_file_input"}`, data, config)
+    .post(`${API_ROOT}${params?.type === "s3" ? "music/example/generate" : "music/upload/generate"}`, data, config)
     .then((res) => {
       if (res?.status === 201) {
         toast.success(MESSAGE.SUC_POST_BG_MUSIC, { theme: "dark" });

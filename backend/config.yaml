@@ -1,10 +1,10 @@
 lyric_generation:
 
   ## GPT3 model variant to use
-  engine: "davinci"
+  engine: "text-davinci-003"
 
   ## music genre specific config to control generation of lyrics
-  "common": {
+  "generic": {
     artists: ["Shawn Mendes", "Harry Styles", "Ed Sheeran", "Taylor Swift", "Katy Perry", "Beatles", "Avril Lavigne","Black Sabbath", "Slipknot", "Imagine dragons", "Pink Floyd", "Eminem", "Tupac Shakur", ],
     
     ## temperature for GPT3 model - helps in deciding how the model chooses from its next choice of tokens.
@@ -15,25 +15,25 @@ lyric_generation:
     ## max_tokens to output for lyrics generation model (GPT3)
     max_tokens: 256
   }
-  "Pop": {
+  "pop": {
     artists: ["Dua Lipa", "Shawn Mendes", "Harry Styles", "Ed Sheeran", "Taylor Swift", "Katy Perry"],
     temperature: 0.7,
     frequency_penalty: 0.7,
     max_tokens: 256
   }
-  "Rock": {
+  "rock": {
     artists: ["Queens", "Beatles", "Avril Lavigne", "Imagine dragons", "Metallica", "Pink Floyd"],
     temperature: 0.6,
     frequency_penalty: 0.4,
     max_tokens: 256
   }
-  "Rap": {
+  "rap": {
     artists:["Eminem", "Tupac Shakur", "Drake", "B.I.G"],
     temperature: 0.8,
     frequency_penalty: 0.6,
     max_tokens: 256
   }
-  "Metal": {
+  "metal": {
     artists:["Black Sabbath", "Slipknot", "Korn", "System of a down"],
     temperature: 0.9,
     frequency_penalty: 0.2,
